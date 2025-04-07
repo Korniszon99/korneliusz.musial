@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korneliusz Musiał portfolio</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        :root {
+            --leaflet-tile-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .leaflet-tile {
+                filter: var(--leaflet-tile-filter, none);
+            }
+
+            .leaflet-container {
+                background: #303030;
+            }
+        }
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            background-color: darkblue;
+            color: whitesmoke;
+            font-family: "Droid Sans Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", monospace;
+        }
+        #map-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #map {
+            position: relative;
+            z-index: 1;
+            width: 90%;
+            height: 70%;
+            border: 2px solid #010149;
+            border-radius: 8px;
+        }
+        #content {
+            flex: 1;
+            padding: 40px;
+        }
+        #nav-bar {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background-color: #010149;
+            width: 90%;
+            margin-top: 10px;
+            gap: 15px;
+            border-radius: 8px;
+        }
+        #nav-bar button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #000073;
+            color: white;
+            border: 1px solid white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        #nav-bar button:hover {
+            background-color: #0000a0;
+            transform: scale(1.05);
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 100%;
+            border: 2px solid white;
+            background-color: #000073;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .dot:hover {
+            transform: scale(1.3);
+        }
+        .dot.active {
+            background-color: white;
+            transform: scale(1.3);
+        }
+        .custom-icon {
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+<div id="map-container">
+    <div id="map"></div>
+    <div id="nav-bar">
+        <button id="prev">← Previous</button>
+        <div class="dot active" data-index="0"></div>
+        <div class="dot" data-index="1"></div>
+        <div class="dot" data-index="2"></div>
+        <div class="dot" data-index="3"></div>
+        <button id="next">Next →</button>
+    </div>
+</div>
+<div id="content">
+    <h1>Welcome to my portfolio</h1>
+    <div id="location-content">
+        <!-- Content will be dynamically updated here -->
+    </div>
+</div>
+<script>
+    // Custom icons configuration - REPLACE THESE WITH YOUR LOGO URLs
+    const customIcons = [
+        L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png', // Replace with PW logo
+            iconSize: [40, 40],
+            iconAnchor: [20, 40],
+            popupAnchor: [0, -40],
+            className: 'custom-icon'
+        }),
+        L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png', // Replace with Intiaro logo
+            iconSize: [40, 40],
+            iconAnchor: [20, 40],
+            popupAnchor: [0, -40],
+            className: 'custom-icon'
+        }),
+        L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png', // Replace with TSL logo
+            iconSize: [40, 40],
+            iconAnchor: [20, 40],
+            popupAnchor: [0, -40],
+            className: 'custom-icon'
+        }),
+        L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png', // Replace with Starbucks logo
+            iconSize: [40, 40],
+            iconAnchor: [20, 40],
+            popupAnchor: [0, -40],
+            className: 'custom-icon'
+        })
+    ];
+
+    // Enhanced JSON data with descriptions and icon references
+    const jsonData = [
+        {
+            "name": "Politechnika Warszawska",
+            "lat": 52.2204571,
+            "lng": 21.0105626,
+            "description": "I studied Geodesy and Cartography at Warsaw University of Technology, where I gained fundamental knowledge in spatial data analysis and mapping.",
+            "icon": 0
+        },
+        {
+            "name": "Intiaro",
+            "lat": 52.2298661,
+            "lng": 20.9709719,
+            "description": "At Intiaro, I worked as a GIS specialist, developing spatial databases and creating interactive web maps for various clients.",
+            "icon": 1
+        },
+        {
+            "name": "TSL Intermodal",
+            "lat": 52.1525861,
+            "lng": 21.0057766,
+            "description": "During my internship at TSL Intermodal, I helped optimize logistics routes using spatial analysis and GIS tools.",
+            "icon": 2
+        },
+        {
+            "name": "Starbucks PKP Centralny",
+            "lat": 52.2285053,
+            "lng": 21.0028238,
+            "description": "This is where I often worked on my geospatial projects while enjoying good coffee and the vibrant atmosphere of Warsaw's central station.",
+            "icon": 3
+        }
+    ];
+
+    let currentIndex = 0;
+
+    // Initialize map and layer group for markers
+    const map = L.map('map').setView([jsonData[currentIndex].lat, jsonData[currentIndex].lng], 13);
+    const markersLayer = L.layerGroup();
+
+    // Base layers
+    const osmTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const overlayLayers = {
+        "places": markersLayer
+    };
+
+    L.control.layers(null, overlayLayers).addTo(map);
+
+    // Function to update content based on current location
+    function updateContent(index) {
+        const location = jsonData[index];
+        const contentDiv = document.getElementById('location-content');
+        contentDiv.innerHTML = `
+            <h2>${location.name}</h2>
+            <p>${location.description}</p>
+        `;
+    }
+
+    // Add markers with custom icons
+    jsonData.forEach(function(location, index) {
+        const marker = L.marker([location.lat, location.lng], {
+            icon: customIcons[location.icon]
+        })
+            .bindPopup(location.name)
+            .on('click', function() {
+                centerMap(index);
+            });
+        markersLayer.addLayer(marker);
+    });
+
+    // Add markers layer to map
+    markersLayer.addTo(map);
+
+    // Function to center map on a location and update content
+    function centerMap(index) {
+        currentIndex = index;
+        const location = jsonData[index];
+        map.setView([location.lat, location.lng], 13);
+
+        // Update active dot
+        document.querySelectorAll('.dot').forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+
+        // Update content
+        updateContent(index);
+    }
+
+    // Initialize content
+    updateContent(currentIndex);
+
+    // Event listeners for navigation buttons
+    document.getElementById('prev').addEventListener('click', function() {
+        const newIndex = (currentIndex - 1 + jsonData.length) % jsonData.length;
+        const location = jsonData[newIndex];
+        markersLayer.eachLayer(function(layer) {
+            if (layer.getLatLng().lat === location.lat && layer.getLatLng().lng === location.lng) {
+                layer.openPopup();
+            }
+        });
+        centerMap(newIndex);
+    });
+
+    document.getElementById('next').addEventListener('click', function() {
+        const newIndex = (currentIndex + 1) % jsonData.length;
+        const location = jsonData[newIndex];
+        markersLayer.eachLayer(function(layer) {
+            if (layer.getLatLng().lat === location.lat && layer.getLatLng().lng === location.lng) {
+                layer.openPopup();
+            }
+        });
+        centerMap(newIndex);
+    });
+
+    // Event listeners for dots
+    document.querySelectorAll('.dot').forEach(dot => {
+        dot.addEventListener('click', function() {
+            const index = parseInt(this.getAttribute('data-index'));
+            const location = jsonData[index];
+            markersLayer.eachLayer(function(layer) {
+                if (layer.getLatLng().lat === location.lat && layer.getLatLng().lng === location.lng) {
+                    layer.openPopup();
+                }
+            });
+            centerMap(index);
+        });
+    });
+</script>
+</body>
+</html>
