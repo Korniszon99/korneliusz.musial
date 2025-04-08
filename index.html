@@ -120,29 +120,29 @@
     // Custom icons configuration - REPLACE THESE WITH YOUR LOGO URLs
     const customIcons = [
         L.icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png', // Replace with PW logo
-            iconSize: [40, 40],
+            iconUrl: './static/logos/logo-pw-new.png', // Replace with PW logo
+            iconSize: [80, 60],
+            iconAnchor: [30, 50],
+            popupAnchor: [0, -40],
+            className: 'custom-icon'
+        }),
+        L.icon({
+            iconUrl: './static/logos/intiaro-logo.png', // Replace with Intiaro logo
+            iconSize: [50, 50],
             iconAnchor: [20, 40],
             popupAnchor: [0, -40],
             className: 'custom-icon'
         }),
         L.icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png', // Replace with Intiaro logo
-            iconSize: [40, 40],
-            iconAnchor: [20, 40],
+            iconUrl: './static/logos/TSL-logo.png', // Replace with TSL logo
+            iconSize: [100, 50],
+            iconAnchor: [50, 25],
             popupAnchor: [0, -40],
             className: 'custom-icon'
         }),
         L.icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png', // Replace with TSL logo
-            iconSize: [40, 40],
-            iconAnchor: [20, 40],
-            popupAnchor: [0, -40],
-            className: 'custom-icon'
-        }),
-        L.icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png', // Replace with Starbucks logo
-            iconSize: [40, 40],
+            iconUrl: './static/logos/starbucks-logo.png', // Replace with Starbucks logo
+            iconSize: [60, 60],
             iconAnchor: [20, 40],
             popupAnchor: [0, -40],
             className: 'custom-icon'
@@ -213,12 +213,31 @@
         const marker = L.marker([location.lat, location.lng], {
             icon: customIcons[location.icon]
         })
-            .bindPopup(location.name)
             .on('click', function() {
                 centerMap(index);
             });
         markersLayer.addLayer(marker);
     });
+    // Function to update marker icons based on zoom level
+    function updateIconsBasedOnZoom() {
+        const currentZoom = map.getZoom();
+        const useCustomIcons = currentZoom >= 16; // Threshold for zoom level
+
+        markersLayer.eachLayer(function(marker) {
+            const location = jsonData.find(loc =>
+                loc.lat === marker.getLatLng().lat && loc.lng === marker.getLatLng().lng
+            );
+            if (location) {
+                marker.setIcon(useCustomIcons ? customIcons[location.icon] : L.Marker.prototype.options.icon);
+            }
+        });
+    }
+
+    // Listen for zoom changes
+    map.on('zoomend', updateIconsBasedOnZoom);
+
+    // Initialize icons based on the initial zoom level
+    updateIconsBasedOnZoom();
 
     // Add markers layer to map
     markersLayer.addTo(map);
@@ -227,7 +246,7 @@
     function centerMap(index) {
         currentIndex = index;
         const location = jsonData[index];
-        map.setView([location.lat, location.lng], 13);
+        map.setView([location.lat, location.lng], 16);
 
         // Update active dot
         document.querySelectorAll('.dot').forEach((dot, i) => {
@@ -245,22 +264,24 @@
     document.getElementById('prev').addEventListener('click', function() {
         const newIndex = (currentIndex - 1 + jsonData.length) % jsonData.length;
         const location = jsonData[newIndex];
-        markersLayer.eachLayer(function(layer) {
-            if (layer.getLatLng().lat === location.lat && layer.getLatLng().lng === location.lng) {
-                layer.openPopup();
-            }
-        });
+        // markersLayer.eachLayer(function(layer) {
+        //     if (layer.getLatLng().lat === location.lat && layer.getLatLng().lng === location.lng) {
+        //         layer.openPopup();
+        //     }
+        // });
+        map.setView([location.lat, location.lng], 16);
         centerMap(newIndex);
     });
 
     document.getElementById('next').addEventListener('click', function() {
         const newIndex = (currentIndex + 1) % jsonData.length;
         const location = jsonData[newIndex];
-        markersLayer.eachLayer(function(layer) {
-            if (layer.getLatLng().lat === location.lat && layer.getLatLng().lng === location.lng) {
-                layer.openPopup();
-            }
-        });
+        // markersLayer.eachLayer(function(layer) {
+        //     if (layer.getLatLng().lat === location.lat && layer.getLatLng().lng === location.lng) {
+        //         layer.openPopup();
+        //     }
+        // });
+        map.setView([location.lat, location.lng], 16);
         centerMap(newIndex);
     });
 
@@ -269,11 +290,12 @@
         dot.addEventListener('click', function() {
             const index = parseInt(this.getAttribute('data-index'));
             const location = jsonData[index];
-            markersLayer.eachLayer(function(layer) {
-                if (layer.getLatLng().lat === location.lat && layer.getLatLng().lng === location.lng) {
-                    layer.openPopup();
-                }
-            });
+            // markersLayer.eachLayer(function(layer) {
+            //     if (layer.getLatLng().lat === location.lat && layer.getLatLng().lng === location.lng) {
+            //         layer.openPopup();
+            //     }
+            // });
+            map.setView([location.lat, location.lng], 16);
             centerMap(index);
         });
     });
