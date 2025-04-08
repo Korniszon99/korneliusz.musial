@@ -96,6 +96,54 @@
             border: 2px solid white;
             box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
+        #skills-ticker {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background-color: rgba(1, 1, 73, 0.9);
+            color: white;
+            overflow: hidden;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid white;
+        }
+
+        #skills-container {
+            display: flex;
+            white-space: nowrap;
+            animation: scrollTicker 60s linear infinite;
+        }
+
+        .skill-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .skill-item:hover {
+            transform: scale(1.1);
+        }
+
+        .skill-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        @keyframes scrollTicker {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
     </style>
 </head>
 <body>
@@ -114,6 +162,11 @@
     <h1>Welcome to my portfolio</h1>
     <div id="location-content">
         <!-- Content will be dynamically updated here -->
+    </div>
+</div>
+<div id="skills-ticker">
+    <div id="skills-container">
+        <!-- Skills will be added dynamically -->
     </div>
 </div>
 <script>
@@ -198,6 +251,23 @@
 
     L.control.layers(null, overlayLayers).addTo(map);
 
+    function initializeContent() {
+        const currentZoom = map.getZoom();
+        const locationContentDiv = document.getElementById('location-content');
+
+        if (currentZoom < 16) {
+            locationContentDiv.innerHTML = `
+            <h2>Overview</h2>
+            <p>This map showcases various locations and their descriptions. Zoom in to see more details.</p>
+        `;
+        } else {
+            updateContent(currentIndex);
+        }
+    }
+
+    // Call the initialization function
+    initializeContent();
+
     // Function to update content based on current location
     function updateContent(index) {
         const location = jsonData[index];
@@ -231,6 +301,16 @@
                 marker.setIcon(useCustomIcons ? customIcons[location.icon] : L.Marker.prototype.options.icon);
             }
         });
+        const locationContentDiv = document.getElementById('location-content');
+        if (currentZoom < 16) {
+            locationContentDiv.innerHTML = `
+            <h2>Overview</h2>
+            <p>This map showcases various locations and their descriptions. Zoom in to see more details.</p>
+        `;
+        } else {
+            // Optionally clear the default content when zoomed in
+            updateContent(currentIndex);
+        }
     }
 
     // Listen for zoom changes
@@ -258,7 +338,7 @@
     }
 
     // Initialize content
-    updateContent(currentIndex);
+    initializeContent(currentIndex);
 
     // Event listeners for navigation buttons
     document.getElementById('prev').addEventListener('click', function() {
@@ -299,6 +379,53 @@
             centerMap(index);
         });
     });
+
+    const skills = [
+        { name: "JavaScript", icon: "🟨" },
+        { name: "Leaflet", icon: "🗺️" },
+        { name: "Python", icon: "🐍" },
+        { name: "GIS", icon: "🌐" },
+        { name: "HTML/CSS", icon: "📄" },
+        { name: "React", icon: "⚛️" },
+        { name: "Node.js", icon: "🟢" },
+        { name: "PostgreSQL", icon: "🐘" },
+        { name: "Docker", icon: "🐳" },
+        { name: "Git", icon: "📌" },
+        { name: "QGIS", icon: "🔍" },
+        { name: "ArcGIS", icon: "🧭" }
+    ];
+
+    const skillsContainer = document.getElementById('skills-container');
+
+    // Map each skill to a specific color
+    const skillColorMap = {
+        "JavaScript": "#F7DF1E",
+        "Leaflet": "#4CAF50",
+        "Python": "#306998",
+        "GIS": "#FF5733",
+        "HTML/CSS": "#E34C26",
+        "React": "#61DAFB",
+        "Node.js": "#68A063",
+        "PostgreSQL": "#336791",
+        "Docker": "#2496ED",
+        "Git": "#F05032",
+        "QGIS": "#3A9B35",
+        "ArcGIS": "#0079C1"
+    };
+
+    skills.forEach(skill => {
+        const skillElement = document.createElement('div');
+        skillElement.className = 'skill-item';
+        skillElement.style.backgroundColor = skillColorMap[skill.name]; // Assign color based on skill name
+        skillElement.innerHTML = `
+        <span class="skill-icon">${skill.icon}</span>
+        <span>${skill.name}</span>
+    `;
+        skillsContainer.appendChild(skillElement);
+    });
+
+    // Clone the entire container content for seamless looping
+    skillsContainer.innerHTML += skillsContainer.innerHTML;
 </script>
 </body>
 </html>
