@@ -4,197 +4,416 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Korneliusz Musiał portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap');
+
         :root {
-            --leaflet-tile-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+            --primary: #00aa00;
+            --secondary: #004400;
+            --dark: #002200;
+            --text: #33ff33;
+            --highlight: #55ff55;
+            --background: #001100;
+            --grid: rgba(0, 255, 0, 0.1);
+            --leaflet-tile-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(120deg) saturate(0.7) brightness(0.8);
+        }
+
+        body {
+            font-family: 'VT323', monospace;
+            background-color: var(--background);
+            color: var(--text);
+            background-image:
+                    linear-gradient(var(--grid) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 20px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .retro-container {
+            border: 2px solid var(--text);
+            box-shadow: 0 0 10px var(--primary), inset 0 0 5px var(--primary);
+            border-radius: 4px;
+            background-color: var(--dark);
+            position: relative;
+        }
+
+        .retro-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 24px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-bottom: 2px solid var(--text);
+        }
+
+        .retro-header {
+            font-family: 'Press Start 2P', cursive;
+            text-shadow: 0 0 5px var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .retro-button {
+            background: var(--secondary);
+            color: var(--text);
+            border: 2px solid var(--text);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 0 5px var(--primary);
+            transition: all 0.2s;
+            text-shadow: 0 0 3px var(--primary);
+        }
+
+        .retro-button:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px var(--highlight);
+        }
+
+        .retro-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--text);
+            background: var(--secondary);
+            transition: all 0.3s;
+        }
+
+        .retro-dot:hover {
+            background: var(--primary);
+            box-shadow: 0 0 5px var(--highlight);
+            transform: scale(1.2);
+        }
+
+        .retro-dot.active {
+            background: var(--text);
+            box-shadow: 0 0 8px var(--highlight);
+        }
+
+        .custom-icon {
+            border-radius: 50%;
+            border: 2px solid var(--text);
+            box-shadow: 0 0 10px var(--primary);
+            filter: drop-shadow(0 0 5px var(--primary));
+        }
+
+        #skills-ticker {
+            border-top: 2px solid var(--text);
+            background: var(--dark);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .skill-item {
+            text-shadow: 0 0 3px var(--primary);
+            font-weight: normal;
+            border: 1px solid var(--text);
+        }
+
+        .skill-item:hover {
+            box-shadow: 0 0 10px var(--highlight);
+            text-shadow: 0 0 5px var(--highlight);
+        }
+
+        @keyframes scanline {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: linear-gradient(transparent 50%, rgba(0, 255, 0, 0.02) 50%);
+            background-size: 100% 4px;
+            z-index: 1000;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(0, 255, 0, 0.15);
+            animation: scanline 10s linear infinite;
+            pointer-events: none;
+            z-index: 1001;
+        }
+
+        .crt-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crt-effect::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Leaflet custom styling */
+        .leaflet-container {
+            background: var(--dark);
+            border-radius: 0;
         }
 
         @media (prefers-color-scheme: dark) {
             .leaflet-tile {
                 filter: var(--leaflet-tile-filter, none);
             }
-
-            .leaflet-container {
-                background: #303030;
-            }
-        }
-        body {
-            display: flex;
-            height: 100vh;
-            margin: 0;
-            background-color: darkblue;
-            color: whitesmoke;
-            font-family: "Droid Sans Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", monospace;
-        }
-        #map-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        #map {
-            position: relative;
-            z-index: 1;
-            width: 90%;
-            height: 70%;
-            border: 2px solid #010149;
-            border-radius: 8px;
-        }
-        #content {
-            flex: 1;
-            padding: 40px;
-        }
-        #nav-bar {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            background-color: #010149;
-            width: 90%;
-            margin-top: 10px;
-            gap: 15px;
-            border-radius: 8px;
-        }
-        #nav-bar button {
-            margin: 0 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #000073;
-            color: white;
-            border: 1px solid white;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        #nav-bar button:hover {
-            background-color: #0000a0;
-            transform: scale(1.05);
-        }
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 100%;
-            border: 2px solid white;
-            background-color: #000073;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .dot:hover {
-            transform: scale(1.3);
-        }
-        .dot.active {
-            background-color: white;
-            transform: scale(1.3);
-        }
-        .custom-icon {
-            border-radius: 50%;
-            border: 2px solid white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        #skills-ticker {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 40px;
-            background-color: rgba(1, 1, 73, 0.9);
-            color: white;
-            overflow: hidden;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            border-top: 1px solid white;
         }
 
-        #skills-container {
-            display: flex;
-            white-space: nowrap;
-            animation: scrollTicker 60s linear infinite;
+        .leaflet-tile {
+            filter: var(--leaflet-tile-filter, none);
         }
 
-        .skill-item {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: transform 0.3s;
+        .leaflet-control-attribution {
+            background: var(--dark) !important;
+            color: var(--text) !important;
+            border: 1px solid var(--text);
         }
 
-        .skill-item:hover {
-            transform: scale(1.1);
+        .leaflet-control-attribution a {
+            color: var(--highlight) !important;
         }
 
-        .skill-icon {
-            width: 24px;
-            height: 24px;
-            margin-right: 10px;
+        .leaflet-control-layers {
+            background: var(--dark) !important;
+            color: var(--text) !important;
+            border: 1px solid var(--text) !important;
         }
 
+        .leaflet-control-zoom a {
+            background: var(--dark) !important;
+            color: var(--text) !important;
+            border: 1px solid var(--text) !important;
+        }
+
+        .leaflet-control-zoom a:hover {
+            background: var(--secondary) !important;
+        }
+
+        /* Animation for blinking text effect */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .blink {
+            animation: blink 1.5s infinite;
+        }
+
+        /* Scrolling ticker */
         @keyframes scrollTicker {
             0% { transform: translateX(0%); }
             100% { transform: translateX(-50%); }
         }
+
+        #skills-container {
+            animation: scrollTicker 60s linear infinite;
+        }
+
+        /* Placeholder for map before it's initialized */
+        #map-placeholder {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark);
+            border: 2px solid var(--text);
+            box-shadow: 0 0 10px var(--primary), inset 0 0 5px var(--primary);
+        }
+
+        /* Initial hidden state for content */
+        .hidden-initial {
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Startup screen */
+        #startup-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        /* Command line styles */
+        .command-suggestion {
+            cursor: pointer;
+            display: inline-block;
+            margin-right: 10px;
+            padding: 2px 6px;
+            background-color: var(--secondary);
+            border: 1px solid var(--text);
+            transition: all 0.2s;
+        }
+
+        .command-suggestion:hover {
+            background-color: var(--primary);
+            color: var(--dark);
+            box-shadow: 0 0 5px var(--highlight);
+        }
+
+        #command-input {
+            background: transparent;
+            color: var(--text);
+            border: none;
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            outline: none;
+            width: 80%;
+        }
+
+        #command-line-container {
+            margin-top: 20px;
+            padding-top: 12px;
+            border-top: 1px solid var(--text);
+        }
+
+        #command-history {
+            max-height: 120px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .command-entry {
+            margin-bottom: 4px;
+        }
+
+        .command-prompt {
+            color: var(--primary);
+            margin-right: 8px;
+        }
+
+        .command-response {
+            color: var(--text);
+            margin-left: 16px;
+            opacity: 0.9;
+        }
     </style>
 </head>
-<body>
-<div id="map-container">
-    <div id="map"></div>
-    <div id="nav-bar">
-        <button id="prev">← Previous</button>
-        <div class="dot active" data-index="0"></div>
-        <div class="dot" data-index="1"></div>
-        <div class="dot" data-index="2"></div>
-        <div class="dot" data-index="3"></div>
-        <button id="next">Next →</button>
+<body class="crt-effect">
+<!-- Startup Screen -->
+<div id="startup-screen">
+    <div id="startup-content" class="text-center"></div>
+</div>
+
+<div class="flex flex-col md:flex-row h-screen hidden-initial" id="main-content">
+    <div id="map-container" class="flex-1 flex flex-col justify-center items-center p-4">
+        <div class="w-full text-center mb-4">
+            <h1 class="retro-header text-2xl md:text-3xl mb-2">KORNELIUSZ MUSIAŁ</h1>
+            <p class="text-sm blink">> GEOSPATIAL PORTFOLIO_</p>
+        </div>
+        <div id="map-placeholder" class="w-full h-64 md:h-96 mt-2 flex justify-center items-center">
+            <span class="blink text-lg">> INITIALIZING MAP...</span>
+        </div>
+        <div id="map" class="retro-container w-full h-64 md:h-96 mt-2" style="display: none;"></div>
+        <div id="nav-bar" class="flex justify-center items-center space-x-3 mt-4">
+            <button id="prev" class="retro-button">←PREV</button>
+            <div class="retro-dot active" data-index="0"></div>
+            <div class="retro-dot" data-index="1"></div>
+            <div class="retro-dot" data-index="2"></div>
+            <div class="retro-dot" data-index="3"></div>
+            <button id="next" class="retro-button">NEXT→</button>
+        </div>
+    </div>
+
+    <div id="content" class="flex-1 p-4 md:p-8">
+        <div class="retro-container p-6 pt-8 h-full overflow-y-auto flex flex-col">
+            <h2 class="retro-header text-xl mb-4">SYSTEM OUTPUT</h2>
+            <div id="location-content" class="pt-4 flex-grow">
+                <!-- Content will be dynamically updated here -->
+            </div>
+
+            <div id="command-line-container" class="mt-auto">
+                <h3 class="retro-header text-lg mb-3">> COMMAND LINE_</h3>
+                <div id="command-history"></div>
+                <div id="command-suggestions" class="mb-3">
+                    <span class="text-sm text-green-200 mb-2 block">Available commands:</span>
+                    <span class="command-suggestion">cd PW</span>
+                    <span class="command-suggestion">cd Intiaro</span>
+                    <span class="command-suggestion">cd Intermodal</span>
+                    <span class="command-suggestion">cd sbx</span>
+                    <span class="command-suggestion">cd github</span>
+                    <span class="command-suggestion">help</span>
+                    <span class="command-suggestion">ls</span>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-green-500 mr-2">$</span>
+                    <input type="text" id="command-input" autocomplete="off" placeholder="Type a command...">
+                    <span class="blink ml-1">|</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<div id="content">
-    <h1>Welcome to my portfolio</h1>
-    <div id="location-content">
-        <!-- Content will be dynamically updated here -->
-    </div>
-</div>
-<div id="skills-ticker">
-    <div id="skills-container">
+
+<div id="skills-ticker" class="fixed bottom-0 left-0 w-full h-12 flex items-center overflow-hidden hidden-initial">
+    <div id="skills-container" class="flex whitespace-nowrap">
         <!-- Skills will be added dynamically -->
     </div>
 </div>
+
 <script>
-    // Custom icons configuration - REPLACE THESE WITH YOUR LOGO URLs
+    // Custom icons configuration
     const customIcons = [
         L.icon({
-            iconUrl: './static/logos/logo-pw-new.png', // Replace with PW logo
+            iconUrl: './static/logos/logo-pw-new.png',
             iconSize: [80, 60],
             iconAnchor: [30, 50],
             popupAnchor: [0, -40],
             className: 'custom-icon'
         }),
         L.icon({
-            iconUrl: './static/logos/intiaro-logo.png', // Replace with Intiaro logo
+            iconUrl: './static/logos/intiaro-logo.png',
             iconSize: [50, 50],
             iconAnchor: [20, 40],
             popupAnchor: [0, -40],
             className: 'custom-icon'
         }),
         L.icon({
-            iconUrl: './static/logos/TSL-logo.png', // Replace with TSL logo
+            iconUrl: './static/logos/TSL-logo.png',
             iconSize: [100, 50],
             iconAnchor: [50, 25],
             popupAnchor: [0, -40],
             className: 'custom-icon'
         }),
         L.icon({
-            iconUrl: './static/logos/starbucks-logo.png', // Replace with Starbucks logo
+            iconUrl: './static/logos/starbucks-logo.png',
             iconSize: [60, 60],
             iconAnchor: [20, 40],
             popupAnchor: [0, -40],
@@ -206,130 +425,247 @@
     const jsonData = [
         {
             "name": "Politechnika Warszawska",
+            "shortName": "PW",
             "lat": 52.2204571,
             "lng": 21.0105626,
-            "description": "I studied Geodesy and Cartography at Warsaw University of Technology, where I gained fundamental knowledge in spatial data analysis and mapping.",
+            "description": "I am studying Geoinformatics at Warsaw University of Technology, where I built a strong foundation in spatial data analysis, programming, and application development. I developed a location-based game app for student council integration purposes based on the repository https://github.com/GizaBartosz/FUTPhotoTaskGame, refactored it into Django using emoji-based interaction, and am currently working on a cross-platform geolocation project in Flutter (mobile and web).",
             "icon": 0
         },
         {
             "name": "Intiaro",
+            "shortName": "Intiaro",
             "lat": 52.2298661,
             "lng": 20.9709719,
-            "description": "At Intiaro, I worked as a GIS specialist, developing spatial databases and creating interactive web maps for various clients.",
+            "description": "As an IT intern at Intiaro, I developed a microservice from scratch for managing internal data. My responsibilities included asynchronous communication with company APIs using Python, managing a noSQL database in DynamoDB, and creating an admin panel using FastAPI and Refine.",
             "icon": 1
         },
         {
             "name": "TSL Intermodal",
+            "shortName": "Intermodal",
             "lat": 52.1525861,
             "lng": 21.0057766,
-            "description": "During my internship at TSL Intermodal, I helped optimize logistics routes using spatial analysis and GIS tools.",
+            "description": "During my internship at TSL Intermodal, I digitized and organized the company’s physical archives by processing and sorting over 600 documents daily, including invoices and logistics orders.",
             "icon": 2
         },
         {
             "name": "Starbucks PKP Centralny",
+            "shortName": "sbx",
             "lat": 52.2285053,
             "lng": 21.0028238,
-            "description": "This is where I often worked on my geospatial projects while enjoying good coffee and the vibrant atmosphere of Warsaw's central station.",
+            "description": "As an Advanced Barista at Starbucks, I developed strong interpersonal skills through daily customer interactions in a fast-paced environment. I honed my teamwork abilities by closely collaborating with colleagues during high-traffic periods, ensuring smooth service and maintaining a positive work atmosphere. This experience also strengthened my adaptability, communication, and responsibility in a professional setting.",
             "icon": 3
         }
     ];
 
+
     let currentIndex = 0;
+    let map, markersLayer;  // Declared but not initialized immediately
 
-    // Initialize map and layer group for markers
-    const map = L.map('map').setView([jsonData[currentIndex].lat, jsonData[currentIndex].lng], 13);
-    const markersLayer = L.layerGroup();
+    function typeWriterEffect(element, text, speed = 30) {
+        let i = 0;
+        element.innerHTML = '';
 
-    // Base layers
-    const osmTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+        function type() {
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(type, speed);
+            }
+        }
 
-    const overlayLayers = {
-        "places": markersLayer
-    };
+        type();
+    }
 
-    L.control.layers(null, overlayLayers).addTo(map);
+    // Show startup sequence first
+    function showStartupSequence() {
+        const startupSequence = [
+            "> INITIALIZING SYSTEM...",
+            "> LOADING GEOSPATIAL DATABASE...",
+            "> ESTABLISHING MAP COORDINATES...",
+            "> RENDERING INTERFACE...",
+            "> SYSTEM ONLINE. WELCOME TO K. MUSIAŁ PORTFOLIO."
+        ];
+
+        const terminalElement = document.getElementById('startup-content');
+
+        let lineIndex = 0;
+
+        function displayNextLine() {
+            if (lineIndex < startupSequence.length) {
+                const line = document.createElement('div');
+                line.className = 'mb-2';
+                terminalElement.appendChild(line);
+
+                typeWriterEffect(line, startupSequence[lineIndex], 40);
+
+                lineIndex++;
+                setTimeout(displayNextLine, 1500);
+            } else {
+                setTimeout(() => {
+                    // Fade out startup screen
+                    document.getElementById('startup-screen').style.transition = 'opacity 1s';
+                    document.getElementById('startup-screen').style.opacity = '0';
+
+                    setTimeout(() => {
+                        // Remove startup screen and show main content
+                        document.getElementById('startup-screen').style.display = 'none';
+
+                        // Show main content with fade-in effect
+                        const hiddenElements = document.querySelectorAll('.hidden-initial');
+                        hiddenElements.forEach(el => {
+                            el.style.opacity = '1';
+                        });
+
+                        // Initialize map after startup sequence
+                        initializeMap();
+                        // Initialize command line
+                        initializeCommandLine();
+                    }, 1000);
+                }, 1000);
+            }
+        }
+
+        displayNextLine();
+    }
+
+    // Initialize map and related features only after startup
+    function initializeMap() {
+        // Hide placeholder and show real map
+        document.getElementById('map-placeholder').style.display = 'none';
+        document.getElementById('map').style.display = 'block';
+
+        // Initialize map and layer group for markers
+        map = L.map('map').setView([jsonData[currentIndex].lat, jsonData[currentIndex].lng], 13);
+        markersLayer = L.layerGroup();
+
+        // Base layers
+        const osmTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+
+
+
+
+        // Add markers with custom icons
+        jsonData.forEach(function(location, index) {
+            const marker = L.marker([location.lat, location.lng], {
+                icon: customIcons[location.icon]
+            })
+                .on('click', function() {
+                    centerMap(index);
+                });
+            markersLayer.addLayer(marker);
+        });
+
+        // Function to update marker icons based on zoom level
+        function updateIconsBasedOnZoom() {
+            const currentZoom = map.getZoom();
+            const useCustomIcons = currentZoom >= 16; // Threshold for zoom level
+
+            markersLayer.eachLayer(function(marker) {
+                const location = jsonData.find(loc =>
+                    loc.lat === marker.getLatLng().lat && loc.lng === marker.getLatLng().lng
+                );
+                if (location) {
+                    marker.setIcon(useCustomIcons ? customIcons[location.icon] : L.Marker.prototype.options.icon);
+                }
+            });
+
+            const locationContentDiv = document.getElementById('location-content');
+            if (currentZoom < 16) {
+                locationContentDiv.innerHTML = `
+                        <div class="text-green-400">
+                            <p>> INITIALIZING MAP SYSTEM...</p>
+                            <p>> LOADING GEOSPATIAL DATA...</p>
+                            <p>> SYSTEM READY</p>
+                            <p class="mt-4">> This map showcases various locations in my professional journey.</p>
+                            <p>> ZOOM IN or SELECT LOCATION for detailed information.</p>
+                            <p>> You can also use the COMMAND LINE to navigate (try 'help' or 'ls').</p>
+                        </div>
+                    `;
+            } else {
+                // Optionally clear the default content when zoomed in
+                updateContent(currentIndex);
+            }
+        }
+
+        // Listen for zoom changes
+        map.on('zoomend', updateIconsBasedOnZoom);
+
+        // Initialize icons based on the initial zoom level
+        updateIconsBasedOnZoom();
+
+        // Add markers layer to map
+        markersLayer.addTo(map);
+
+        // Initialize content
+        initializeContent();
+    }
 
     function initializeContent() {
+        if (!map) return; // Safety check
+
         const currentZoom = map.getZoom();
         const locationContentDiv = document.getElementById('location-content');
 
         if (currentZoom < 16) {
             locationContentDiv.innerHTML = `
-            <h2>Overview</h2>
-            <p>This map showcases various locations and their descriptions. Zoom in to see more details.</p>
-        `;
+                    <div class="text-green-400">
+                        <p>> INITIALIZING MAP SYSTEM...</p>
+                        <p>> LOADING GEOSPATIAL DATA...</p>
+                        <p>> SYSTEM READY</p>
+                        <p class="mt-4">> This map showcases various locations in my professional journey.</p>
+                        <p>> ZOOM IN or SELECT LOCATION for detailed information.</p>
+                        <p>> You can also use the COMMAND LINE to navigate (try 'help' or 'ls').</p>
+                    </div>
+                `;
         } else {
             updateContent(currentIndex);
         }
     }
-
-    // Call the initialization function
-    initializeContent();
 
     // Function to update content based on current location
     function updateContent(index) {
         const location = jsonData[index];
         const contentDiv = document.getElementById('location-content');
-        contentDiv.innerHTML = `
-            <h2>${location.name}</h2>
-            <p>${location.description}</p>
-        `;
+
+        contentDiv.innerHTML = ''; // Clear current content
+
+        // Create elements for the typewriter effect
+        const header = document.createElement('h2');
+        header.className = 'text-xl text-green-400 mb-3';
+        contentDiv.appendChild(header);
+
+        const description = document.createElement('p');
+        description.className = 'mb-4';
+        contentDiv.appendChild(description);
+
+        // Add status line
+        const status = document.createElement('p');
+        status.className = 'text-sm text-green-300 mt-6';
+        status.innerHTML = `> COORDINATES: [${location.lat.toFixed(6)}, ${location.lng.toFixed(6)}]`;
+        contentDiv.appendChild(status);
+
+        // Apply typewriter effect
+        setTimeout(() => {
+            typeWriterEffect(header, `> ${location.name.toUpperCase()}`);
+            setTimeout(() => {
+                typeWriterEffect(description, location.description);
+            }, location.name.length * 30 + 300);
+        }, 100);
     }
-
-    // Add markers with custom icons
-    jsonData.forEach(function(location, index) {
-        const marker = L.marker([location.lat, location.lng], {
-            icon: customIcons[location.icon]
-        })
-            .on('click', function() {
-                centerMap(index);
-            });
-        markersLayer.addLayer(marker);
-    });
-    // Function to update marker icons based on zoom level
-    function updateIconsBasedOnZoom() {
-        const currentZoom = map.getZoom();
-        const useCustomIcons = currentZoom >= 16; // Threshold for zoom level
-
-        markersLayer.eachLayer(function(marker) {
-            const location = jsonData.find(loc =>
-                loc.lat === marker.getLatLng().lat && loc.lng === marker.getLatLng().lng
-            );
-            if (location) {
-                marker.setIcon(useCustomIcons ? customIcons[location.icon] : L.Marker.prototype.options.icon);
-            }
-        });
-        const locationContentDiv = document.getElementById('location-content');
-        if (currentZoom < 16) {
-            locationContentDiv.innerHTML = `
-            <h2>Overview</h2>
-            <p>This map showcases various locations and their descriptions. Zoom in to see more details.</p>
-        `;
-        } else {
-            // Optionally clear the default content when zoomed in
-            updateContent(currentIndex);
-        }
-    }
-
-    // Listen for zoom changes
-    map.on('zoomend', updateIconsBasedOnZoom);
-
-    // Initialize icons based on the initial zoom level
-    updateIconsBasedOnZoom();
-
-    // Add markers layer to map
-    markersLayer.addTo(map);
 
     // Function to center map on a location and update content
     function centerMap(index) {
+        if (!map) return; // Safety check
+
         currentIndex = index;
         const location = jsonData[index];
         map.setView([location.lat, location.lng], 16);
 
         // Update active dot
-        document.querySelectorAll('.dot').forEach((dot, i) => {
+        document.querySelectorAll('.retro-dot').forEach((dot, i) => {
             dot.classList.toggle('active', i === index);
         });
 
@@ -337,44 +673,32 @@
         updateContent(index);
     }
 
-    // Initialize content
-    initializeContent(currentIndex);
-
     // Event listeners for navigation buttons
     document.getElementById('prev').addEventListener('click', function() {
+        if (!map) return; // Safety check
+
         const newIndex = (currentIndex - 1 + jsonData.length) % jsonData.length;
         const location = jsonData[newIndex];
-        // markersLayer.eachLayer(function(layer) {
-        //     if (layer.getLatLng().lat === location.lat && layer.getLatLng().lng === location.lng) {
-        //         layer.openPopup();
-        //     }
-        // });
         map.setView([location.lat, location.lng], 16);
         centerMap(newIndex);
     });
 
     document.getElementById('next').addEventListener('click', function() {
+        if (!map) return; // Safety check
+
         const newIndex = (currentIndex + 1) % jsonData.length;
         const location = jsonData[newIndex];
-        // markersLayer.eachLayer(function(layer) {
-        //     if (layer.getLatLng().lat === location.lat && layer.getLatLng().lng === location.lng) {
-        //         layer.openPopup();
-        //     }
-        // });
         map.setView([location.lat, location.lng], 16);
         centerMap(newIndex);
     });
 
     // Event listeners for dots
-    document.querySelectorAll('.dot').forEach(dot => {
+    document.querySelectorAll('.retro-dot').forEach(dot => {
         dot.addEventListener('click', function() {
+            if (!map) return; // Safety check
+
             const index = parseInt(this.getAttribute('data-index'));
             const location = jsonData[index];
-            // markersLayer.eachLayer(function(layer) {
-            //     if (layer.getLatLng().lat === location.lat && layer.getLatLng().lng === location.lng) {
-            //         layer.openPopup();
-            //     }
-            // });
             map.setView([location.lat, location.lng], 16);
             centerMap(index);
         });
@@ -384,7 +708,7 @@
         { name: "JavaScript", icon: "🟨" },
         { name: "Leaflet", icon: "🗺️" },
         { name: "Python", icon: "🐍" },
-        { name: "GIS", icon: "🌐" },
+        { name: "PostGIS", icon: "🌐" },
         { name: "HTML/CSS", icon: "📄" },
         { name: "React", icon: "⚛️" },
         { name: "Node.js", icon: "🟢" },
@@ -397,35 +721,126 @@
 
     const skillsContainer = document.getElementById('skills-container');
 
-    // Map each skill to a specific color
-    const skillColorMap = {
-        "JavaScript": "#F7DF1E",
-        "Leaflet": "#4CAF50",
-        "Python": "#306998",
-        "GIS": "#FF5733",
-        "HTML/CSS": "#E34C26",
-        "React": "#61DAFB",
-        "Node.js": "#68A063",
-        "PostgreSQL": "#336791",
-        "Docker": "#2496ED",
-        "Git": "#F05032",
-        "QGIS": "#3A9B35",
-        "ArcGIS": "#0079C1"
-    };
-
     skills.forEach(skill => {
         const skillElement = document.createElement('div');
-        skillElement.className = 'skill-item';
-        skillElement.style.backgroundColor = skillColorMap[skill.name]; // Assign color based on skill name
+        skillElement.className = 'skill-item px-4 py-2 mx-2 rounded';
+        skillElement.style.backgroundColor = 'var(--secondary)';
         skillElement.innerHTML = `
-        <span class="skill-icon">${skill.icon}</span>
-        <span>${skill.name}</span>
-    `;
+                <span class="skill-icon mr-2">${skill.icon}</span>
+                <span>${skill.name}</span>
+            `;
         skillsContainer.appendChild(skillElement);
     });
 
     // Clone the entire container content for seamless looping
     skillsContainer.innerHTML += skillsContainer.innerHTML;
+
+    // Initialize command line functionality
+    function initializeCommandLine() {
+        const commandInput = document.getElementById('command-input');
+        const commandHistory = document.getElementById('command-history');
+        const commandSuggestions = document.querySelectorAll('.command-suggestion');
+
+        // Add click event to command suggestions
+        commandSuggestions.forEach(suggestion => {
+            suggestion.addEventListener('click', function() {
+                executeCommand(this.textContent);
+            });
+        });
+
+        // Execute command when Enter is pressed
+        commandInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const command = this.value.trim();
+                if (command) {
+                    executeCommand(command);
+                    this.value = '';
+                }
+            }
+        });
+
+        // Function to execute commands
+        function executeCommand(command) {
+            // Add command to history
+            addToCommandHistory(command);
+
+            // Process command
+            if (command.startsWith('cd ')) {
+                const location = command.substring(3).trim();
+                navigateToLocation(location);
+            } else if (command === 'ls') {
+                listLocations();
+            } else if (command === 'help') {
+                showHelp();
+            } else {
+                addCommandResponse(`Command not recognized: ${command}. Try 'help' for a list of available commands.`);
+            }
+        }
+
+        // Function to add command to history
+        function addToCommandHistory(command) {
+            const entry = document.createElement('div');
+            entry.className = 'command-entry';
+            entry.innerHTML = `<span class="command-prompt">$</span> ${command}`;
+            commandHistory.appendChild(entry);
+            commandHistory.scrollTop = commandHistory.scrollHeight;
+        }
+
+        // Function to add command response to history
+        function addCommandResponse(response) {
+            const entry = document.createElement('div');
+            entry.className = 'command-response';
+            entry.textContent = response;
+            commandHistory.appendChild(entry);
+            commandHistory.scrollTop = commandHistory.scrollHeight;
+        }
+
+        // Function to navigate to a location
+        function navigateToLocation(location) {
+            if (location.toLowerCase() === 'github') {
+                addCommandResponse('Opening GitHub profile...');
+                setTimeout(() => {
+                    window.open('https://github.com/Korniszon99', '_blank');
+                }, 1000);
+                return;
+            }
+
+            const locationIndex = jsonData.findIndex(loc =>
+                loc.shortName.toLowerCase() === location.toLowerCase());
+
+            if (locationIndex !== -1) {
+                centerMap(locationIndex);
+                addCommandResponse(`Navigating to ${jsonData[locationIndex].name}...`);
+            } else {
+                addCommandResponse(`Location '${location}' not found. Try 'ls' to see available locations.`);
+            }
+        }
+
+        // Function to list available locations
+        function listLocations() {
+            let response = 'Available locations:\n';
+            jsonData.forEach(location => {
+                response += `- ${location.shortName} (${location.name})\n`;
+            });
+            response += '- github (My GitHub profile)';
+            addCommandResponse(response);
+        }
+
+        // Function to show help
+        function showHelp() {
+            const helpText = `
+Available commands:
+- cd [location]    Navigate to a specific location
+- cd github        Open my GitHub profile
+- ls               List all available locations
+- help             Show this help message
+            `;
+            addCommandResponse(helpText.trim());
+        }
+    }
+
+    // Start the application with the startup sequence
+    document.addEventListener('DOMContentLoaded', showStartupSequence);
 </script>
 </body>
 </html>
