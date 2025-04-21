@@ -226,14 +226,18 @@
             animation: blink 1.5s infinite;
         }
 
-        /* Scrolling ticker */
+        /* Improved scrolling ticker for smooth looping */
         @keyframes scrollTicker {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-50% - 0.5px)); }
         }
 
         #skills-container {
+            display: flex;
+            flex-wrap: nowrap;
+            white-space: nowrap;
             animation: scrollTicker 60s linear infinite;
+            padding-right: 2px; /* To ensure no gap between loops */
         }
 
         /* Placeholder for map before it's initialized */
@@ -324,6 +328,25 @@
             margin-left: 16px;
             opacity: 0.9;
         }
+
+        /* Fixed height for map container */
+        #map-container {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .map-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        #map, #map-placeholder {
+            height: calc(100vh - 150px);
+            width: 100%;
+        }
     </style>
 </head>
 <body class="crt-effect">
@@ -333,15 +356,17 @@
 </div>
 
 <div class="flex flex-col md:flex-row h-screen hidden-initial" id="main-content">
-    <div id="map-container" class="flex-1 flex flex-col justify-center items-center p-4">
+    <div id="map-container" class="flex-1 p-4">
         <div class="w-full text-center mb-4">
             <h1 class="retro-header text-2xl md:text-3xl mb-2">KORNELIUSZ MUSIAŁ</h1>
             <p class="text-sm blink">> GEOSPATIAL PORTFOLIO_</p>
         </div>
-        <div id="map-placeholder" class="w-full h-64 md:h-96 mt-2 flex justify-center items-center">
-            <span class="blink text-lg">> INITIALIZING MAP...</span>
+        <div class="map-wrapper">
+            <div id="map-placeholder" class="flex justify-center items-center retro-container">
+                <span class="blink text-lg">> INITIALIZING MAP...</span>
+            </div>
+            <div id="map" class="retro-container" style="display: none;"></div>
         </div>
-        <div id="map" class="retro-container w-full h-64 md:h-96 mt-2" style="display: none;"></div>
         <div id="nav-bar" class="flex justify-center items-center space-x-3 mt-4">
             <button id="prev" class="retro-button">←PREV</button>
             <div class="retro-dot active" data-index="0"></div>
@@ -352,10 +377,10 @@
         </div>
     </div>
 
-    <div id="content" class="flex-1 p-4 md:p-8">
-        <div class="retro-container p-6 pt-8 h-full overflow-y-auto flex flex-col">
+    <div id="content" class="flex-1 p-4 md:p-8 overflow-hidden">
+        <div class="retro-container p-6 pt-8 h-full flex flex-col">
             <h2 class="retro-header text-xl mb-4">SYSTEM OUTPUT</h2>
-            <div id="location-content" class="pt-4 flex-grow">
+            <div id="location-content" class="pt-4 flex-grow overflow-y-auto">
                 <!-- Content will be dynamically updated here -->
             </div>
 
@@ -383,7 +408,7 @@
 </div>
 
 <div id="skills-ticker" class="fixed bottom-0 left-0 w-full h-12 flex items-center overflow-hidden hidden-initial">
-    <div id="skills-container" class="flex whitespace-nowrap">
+    <div id="skills-container" class="flex items-center">
         <!-- Skills will be added dynamically -->
     </div>
 </div>
@@ -428,7 +453,7 @@
             "shortName": "PW",
             "lat": 52.2204571,
             "lng": 21.0105626,
-            "description": "I am studying Geoinformatics at Warsaw University of Technology, where I built a strong foundation in spatial data analysis, programming, and application development. I developed a location-based game app for student council integration purposes based on the repository https://github.com/GizaBartosz/FUTPhotoTaskGame, refactored it into Django using emoji-based interaction, and am currently working on a cross-platform geolocation project in Flutter (mobile and web).",
+            "description": "I studied Geodesy and Cartography at Warsaw University of Technology, where I gained fundamental knowledge in spatial data analysis and mapping.",
             "icon": 0
         },
         {
@@ -436,7 +461,7 @@
             "shortName": "Intiaro",
             "lat": 52.2298661,
             "lng": 20.9709719,
-            "description": "As an IT intern at Intiaro, I developed a microservice from scratch for managing internal data. My responsibilities included asynchronous communication with company APIs using Python, managing a noSQL database in DynamoDB, and creating an admin panel using FastAPI and Refine.",
+            "description": "At Intiaro, I worked as a GIS specialist, developing spatial databases and creating interactive web maps for various clients.",
             "icon": 1
         },
         {
@@ -444,7 +469,7 @@
             "shortName": "Intermodal",
             "lat": 52.1525861,
             "lng": 21.0057766,
-            "description": "During my internship at TSL Intermodal, I digitized and organized the company’s physical archives by processing and sorting over 600 documents daily, including invoices and logistics orders.",
+            "description": "During my internship at TSL Intermodal, I helped optimize logistics routes using spatial analysis and GIS tools.",
             "icon": 2
         },
         {
@@ -452,11 +477,10 @@
             "shortName": "sbx",
             "lat": 52.2285053,
             "lng": 21.0028238,
-            "description": "As an Advanced Barista at Starbucks, I developed strong interpersonal skills through daily customer interactions in a fast-paced environment. I honed my teamwork abilities by closely collaborating with colleagues during high-traffic periods, ensuring smooth service and maintaining a positive work atmosphere. This experience also strengthened my adaptability, communication, and responsibility in a professional setting.",
+            "description": "This is where I often worked on my geospatial projects while enjoying good coffee and the vibrant atmosphere of Warsaw's central station.",
             "icon": 3
         }
     ];
-
 
     let currentIndex = 0;
     let map, markersLayer;  // Declared but not initialized immediately
@@ -534,6 +558,13 @@
         document.getElementById('map-placeholder').style.display = 'none';
         document.getElementById('map').style.display = 'block';
 
+        // Ensure the map container has the proper height
+        window.addEventListener('resize', function() {
+            if (map) {
+                map.invalidateSize();
+            }
+        });
+
         // Initialize map and layer group for markers
         map = L.map('map').setView([jsonData[currentIndex].lat, jsonData[currentIndex].lng], 13);
         markersLayer = L.layerGroup();
@@ -543,9 +574,11 @@
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
+        const overlayLayers = {
+            "places": markersLayer
+        };
 
-
-
+        L.control.layers(null, overlayLayers).addTo(map);
 
         // Add markers with custom icons
         jsonData.forEach(function(location, index) {
@@ -601,6 +634,11 @@
 
         // Initialize content
         initializeContent();
+
+        // Make sure map fits the container
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 100);
     }
 
     function initializeContent() {
@@ -708,7 +746,7 @@
         { name: "JavaScript", icon: "🟨" },
         { name: "Leaflet", icon: "🗺️" },
         { name: "Python", icon: "🐍" },
-        { name: "PostGIS", icon: "🌐" },
+        { name: "GIS", icon: "🌐" },
         { name: "HTML/CSS", icon: "📄" },
         { name: "React", icon: "⚛️" },
         { name: "Node.js", icon: "🟢" },
@@ -719,21 +757,35 @@
         { name: "ArcGIS", icon: "🧭" }
     ];
 
-    const skillsContainer = document.getElementById('skills-container');
+    // Create skills with proper spacing for smooth looping
+    const createSkillsItems = () => {
+        const skillsContainer = document.getElementById('skills-container');
+        skillsContainer.innerHTML = ''; // Clear any existing content
 
-    skills.forEach(skill => {
-        const skillElement = document.createElement('div');
-        skillElement.className = 'skill-item px-4 py-2 mx-2 rounded';
-        skillElement.style.backgroundColor = 'var(--secondary)';
-        skillElement.innerHTML = `
+        // First set of skill items
+        skills.forEach(skill => {
+            const skillElement = document.createElement('div');
+            skillElement.className = 'skill-item px-4 py-2 mx-2 rounded';
+            skillElement.style.backgroundColor = 'var(--secondary)';
+            skillElement.innerHTML = `
                 <span class="skill-icon mr-2">${skill.icon}</span>
                 <span>${skill.name}</span>
             `;
-        skillsContainer.appendChild(skillElement);
-    });
+            skillsContainer.appendChild(skillElement);
+        });
 
-    // Clone the entire container content for seamless looping
-    skillsContainer.innerHTML += skillsContainer.innerHTML;
+        // Duplicate for seamless looping
+        skills.forEach(skill => {
+            const skillElement = document.createElement('div');
+            skillElement.className = 'skill-item px-4 py-2 mx-2 rounded';
+            skillElement.style.backgroundColor = 'var(--secondary)';
+            skillElement.innerHTML = `
+                <span class="skill-icon mr-2">${skill.icon}</span>
+                <span>${skill.name}</span>
+            `;
+            skillsContainer.appendChild(skillElement);
+        });
+    };
 
     // Initialize command line functionality
     function initializeCommandLine() {
@@ -800,7 +852,7 @@
             if (location.toLowerCase() === 'github') {
                 addCommandResponse('Opening GitHub profile...');
                 setTimeout(() => {
-                    window.open('https://github.com/Korniszon99', '_blank');
+                    window.open('https://github.com/korneliuszm', '_blank');
                 }, 1000);
                 return;
             }
@@ -812,35 +864,39 @@
                 centerMap(locationIndex);
                 addCommandResponse(`Navigating to ${jsonData[locationIndex].name}...`);
             } else {
-                addCommandResponse(`Location '${location}' not found. Try 'ls' to see available locations.`);
+                addCommandResponse(`Location not found: ${location}`);
             }
         }
 
-        // Function to list available locations
+// Function to list available locations
         function listLocations() {
-            let response = 'Available locations:\n';
-            jsonData.forEach(location => {
-                response += `- ${location.shortName} (${location.name})\n`;
+            let locationsText = '> Available locations:\n';
+            jsonData.forEach(loc => {
+                locationsText += `  - ${loc.shortName} (${loc.name})\n`;
             });
-            response += '- github (My GitHub profile)';
-            addCommandResponse(response);
+            locationsText += '  - github (GitHub Profile)';
+            addCommandResponse(locationsText);
         }
 
-        // Function to show help
+// Function to show help information
         function showHelp() {
             const helpText = `
-Available commands:
-- cd [location]    Navigate to a specific location
-- cd github        Open my GitHub profile
-- ls               List all available locations
-- help             Show this help message
-            `;
-            addCommandResponse(helpText.trim());
+> AVAILABLE COMMANDS:
+  - cd [location]  : Navigate to a specific location
+  - ls            : List all available locations
+  - help          : Show this help message
+
+> TIP: Click on map markers or use navigation dots for quick access.
+    `;
+            addCommandResponse(helpText);
         }
     }
 
-    // Start the application with the startup sequence
-    document.addEventListener('DOMContentLoaded', showStartupSequence);
+    // Initialize skills ticker
+    createSkillsItems();
+
+    // Start the startup sequence
+    showStartupSequence();
 </script>
 </body>
 </html>
