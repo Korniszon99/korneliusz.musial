@@ -359,6 +359,7 @@
     <div id="map-container" class="flex-1 p-4">
         <div class="w-full text-center mb-4">
             <h1 class="retro-header text-2xl md:text-3xl mb-2">KORNELIUSZ MUSIAŁ</h1>
+            <p class="text-sm blink">> CONTACT: KORNEL.MUSIAL@GMAIL.COM, TEL: +48 535363432</p>
             <p class="text-sm blink">> GEOSPATIAL PORTFOLIO_</p>
         </div>
         <div class="map-wrapper">
@@ -453,7 +454,7 @@
             "shortName": "PW",
             "lat": 52.2204571,
             "lng": 21.0105626,
-            "description": "I studied Geodesy and Cartography at Warsaw University of Technology, where I gained fundamental knowledge in spatial data analysis and mapping.",
+            "description": "I am studying Geoinformatics at Warsaw University of Technology, where I built a strong foundation in spatial data analysis, programming, and application development. I developed a location-based game app for student council integration based on the repository https://github.com/GizaBartosz/FUTPhotoTaskGame, refactored it into Django using emoji-based interaction, and am currently working on a cross-platform geolocation project in Flutter (mobile and web) as well as I participate in an intership where we create Django service for finance control inside our student council.",
             "icon": 0
         },
         {
@@ -461,7 +462,7 @@
             "shortName": "Intiaro",
             "lat": 52.2298661,
             "lng": 20.9709719,
-            "description": "At Intiaro, I worked as a GIS specialist, developing spatial databases and creating interactive web maps for various clients.",
+            "description": "As an IT intern at Intiaro, I developed a microservice from scratch for managing internal data. My responsibilities included asynchronous communication with company APIs using Python, managing a noSQL database in DynamoDB, and creating an admin panel using FastAPI and Refine.",
             "icon": 1
         },
         {
@@ -469,7 +470,7 @@
             "shortName": "Intermodal",
             "lat": 52.1525861,
             "lng": 21.0057766,
-            "description": "During my internship at TSL Intermodal, I helped optimize logistics routes using spatial analysis and GIS tools.",
+            "description": "During my internship at TSL Intermodal, I digitized and organized the company’s physical archives by processing and sorting over 600 documents daily, including invoices and logistics orders.",
             "icon": 2
         },
         {
@@ -477,10 +478,11 @@
             "shortName": "sbx",
             "lat": 52.2285053,
             "lng": 21.0028238,
-            "description": "This is where I often worked on my geospatial projects while enjoying good coffee and the vibrant atmosphere of Warsaw's central station.",
+            "description": "As an Advanced Barista at Starbucks, I developed strong interpersonal skills through daily customer interactions in a fast-paced environment. I honed my teamwork abilities by closely collaborating with colleagues during high-traffic periods, ensuring smooth service and maintaining a positive work atmosphere. This experience also strengthened my adaptability, communication, and responsibility in a professional setting.",
             "icon": 3
         }
     ];
+
 
     let currentIndex = 0;
     let map, markersLayer;  // Declared but not initialized immediately
@@ -574,13 +576,7 @@
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        const overlayLayers = {
-            "places": markersLayer
-        };
 
-        L.control.layers(null, overlayLayers).addTo(map);
-
-        // Add markers with custom icons
         jsonData.forEach(function(location, index) {
             const marker = L.marker([location.lat, location.lng], {
                 icon: customIcons[location.icon]
