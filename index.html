@@ -5,30 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Korneliusz Musiał portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Share+Tech+Mono&display=swap');
 
         :root {
-            --primary: #00aa00;
-            --secondary: #004400;
-            --dark: #002200;
-            --text: #33ff33;
-            --highlight: #55ff55;
-            --background: #001100;
-            --grid: rgba(0, 255, 0, 0.1);
-            --leaflet-tile-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(120deg) saturate(0.7) brightness(0.8);
+            --primary: #00c853;
+            --secondary: #003d1f;
+            --dark: #001a0d;
+            --text: #3dff7a;
+            --highlight: #7affa8;
+            --background: #000a06;
+            --grid: rgba(0, 255, 100, 0.07);
+            --glow: rgba(0, 255, 100, 0.12);
         }
 
         body {
-            font-family: 'VT323', monospace;
+            font-family: 'IBM Plex Mono', 'Share Tech Mono', ui-monospace, monospace;
+            letter-spacing: 0.06em;
             background-color: var(--background);
             color: var(--text);
             background-image:
+                    radial-gradient(ellipse 80% 50% at 50% -20%, var(--glow), transparent),
                     linear-gradient(var(--grid) 1px, transparent 1px),
                     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-size: 100% 100%, 24px 24px, 24px 24px;
             position: relative;
             overflow-x: hidden;
         }
@@ -53,17 +55,19 @@
         }
 
         .retro-header {
-            font-family: 'Press Start 2P', cursive;
-            text-shadow: 0 0 5px var(--primary);
-            letter-spacing: 1px;
+            font-family: 'Share Tech Mono', 'IBM Plex Mono', monospace;
+            text-shadow: 0 0 8px var(--primary);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
         }
 
         .retro-button {
             background: var(--secondary);
             color: var(--text);
             border: 2px solid var(--text);
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.7rem;
+            font-family: 'Share Tech Mono', 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
             padding: 0.5rem 1rem;
             box-shadow: 0 0 5px var(--primary);
             transition: all 0.2s;
@@ -114,6 +118,8 @@
             text-shadow: 0 0 3px var(--primary);
             font-weight: normal;
             border: 1px solid var(--text);
+            letter-spacing: 0.08em;
+            font-size: 0.95rem;
         }
 
         .skill-item:hover {
@@ -174,46 +180,49 @@
             z-index: 999;
         }
 
-        /* Leaflet custom styling */
-        .leaflet-container {
+        /* MapLibre custom styling */
+        #map.maplibregl-map {
             background: var(--dark);
-            border-radius: 0;
+            font-family: 'IBM Plex Mono', monospace;
+            letter-spacing: 0.04em;
         }
 
-        @media (prefers-color-scheme: dark) {
-            .leaflet-tile {
-                filter: var(--leaflet-tile-filter, none);
-            }
-        }
-
-        .leaflet-tile {
-            filter: var(--leaflet-tile-filter, none);
-        }
-
-        .leaflet-control-attribution {
+        .maplibregl-ctrl-attrib,
+        .maplibregl-ctrl-group {
             background: var(--dark) !important;
             color: var(--text) !important;
-            border: 1px solid var(--text);
+            border: 1px solid var(--text) !important;
+            box-shadow: 0 0 6px var(--primary);
         }
 
-        .leaflet-control-attribution a {
+        .maplibregl-ctrl-attrib a {
             color: var(--highlight) !important;
         }
 
-        .leaflet-control-layers {
-            background: var(--dark) !important;
+        .maplibregl-ctrl button {
+            background-color: var(--dark) !important;
             color: var(--text) !important;
-            border: 1px solid var(--text) !important;
         }
 
-        .leaflet-control-zoom a {
-            background: var(--dark) !important;
-            color: var(--text) !important;
-            border: 1px solid var(--text) !important;
+        .maplibregl-ctrl button:hover {
+            background-color: var(--secondary) !important;
         }
 
-        .leaflet-control-zoom a:hover {
-            background: var(--secondary) !important;
+        .map-marker.custom-icon img {
+            border-radius: 50%;
+            border: 2px solid var(--text);
+            box-shadow: 0 0 10px var(--primary);
+            display: block;
+        }
+
+        .map-marker.default-marker {
+            width: 14px;
+            height: 14px;
+            background: var(--text);
+            border: 2px solid var(--highlight);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--primary);
+            cursor: pointer;
         }
 
         /* Animation for blinking text effect */
@@ -295,8 +304,9 @@
             background: transparent;
             color: var(--text);
             border: none;
-            font-family: 'VT323', monospace;
-            font-size: 18px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 16px;
+            letter-spacing: 0.06em;
             outline: none;
             width: 80%;
         }
@@ -346,6 +356,12 @@
         #map, #map-placeholder {
             height: calc(100vh - 150px);
             width: 100%;
+            min-height: 320px;
+        }
+
+        p, .command-entry, .command-response {
+            letter-spacing: 0.05em;
+            line-height: 1.55;
         }
     </style>
 </head>
@@ -415,36 +431,14 @@
 </div>
 
 <script>
-    // Custom icons configuration
-    const customIcons = [
-        L.icon({
-            iconUrl: './static/logos/logo-pw-new.png',
-            iconSize: [80, 60],
-            iconAnchor: [30, 50],
-            popupAnchor: [0, -40],
-            className: 'custom-icon'
-        }),
-        L.icon({
-            iconUrl: './static/logos/intiaro-logo.png',
-            iconSize: [50, 50],
-            iconAnchor: [20, 40],
-            popupAnchor: [0, -40],
-            className: 'custom-icon'
-        }),
-        L.icon({
-            iconUrl: './static/logos/TSL-logo.png',
-            iconSize: [100, 50],
-            iconAnchor: [50, 25],
-            popupAnchor: [0, -40],
-            className: 'custom-icon'
-        }),
-        L.icon({
-            iconUrl: './static/logos/starbucks-logo.png',
-            iconSize: [60, 60],
-            iconAnchor: [20, 40],
-            popupAnchor: [0, -40],
-            className: 'custom-icon'
-        })
+    const MAP_STYLE = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
+    const DETAIL_ZOOM = 16;
+
+    const customIconConfig = [
+        { iconUrl: './static/logos/logo-pw-new.png', iconSize: [80, 60] },
+        { iconUrl: './static/logos/intiaro-logo.png', iconSize: [50, 50] },
+        { iconUrl: './static/logos/TSL-logo.png', iconSize: [100, 50] },
+        { iconUrl: './static/logos/starbucks-logo.png', iconSize: [60, 60] }
     ];
 
     // Enhanced JSON data with descriptions and icon references
@@ -485,7 +479,8 @@
 
 
     let currentIndex = 0;
-    let map, markersLayer;  // Declared but not initialized immediately
+    let map;
+    const mapMarkers = [];
 
     function typeWriterEffect(element, text, speed = 30) {
         let i = 0;
@@ -554,106 +549,122 @@
         displayNextLine();
     }
 
-    // Initialize map and related features only after startup
+    function createMarkerElement(locationIndex, useCustomIcons) {
+        const location = jsonData[locationIndex];
+        const el = document.createElement('div');
+        el.className = 'map-marker ' + (useCustomIcons ? 'custom-icon' : 'default-marker');
+
+        if (useCustomIcons) {
+            const cfg = customIconConfig[location.icon];
+            const img = document.createElement('img');
+            img.src = cfg.iconUrl;
+            img.alt = location.name;
+            img.width = cfg.iconSize[0];
+            img.height = cfg.iconSize[1];
+            el.appendChild(img);
+        } else {
+            el.title = location.name;
+        }
+
+        return el;
+    }
+
+    function showOverviewContent() {
+        document.getElementById('location-content').innerHTML = `
+            <div class="text-green-400">
+                <p>> INITIALIZING MAP SYSTEM...</p>
+                <p>> LOADING GEOSPATIAL DATA...</p>
+                <p>> SYSTEM READY</p>
+                <p class="mt-4">> This map showcases various locations in my professional journey.</p>
+                <p>> ZOOM IN or SELECT LOCATION for detailed information.</p>
+                <p>> You can also use the COMMAND LINE to navigate (try 'help' or 'ls').</p>
+            </div>
+        `;
+    }
+
+    function rebuildMarkers(useCustomIcons) {
+        mapMarkers.forEach((marker, index) => {
+            const lngLat = marker.getLngLat();
+            marker.remove();
+
+            const element = createMarkerElement(index, useCustomIcons);
+            element.addEventListener('click', () => centerMap(index));
+
+            const newMarker = new maplibregl.Marker({ element, anchor: 'center' })
+                .setLngLat(lngLat)
+                .addTo(map);
+
+            mapMarkers[index] = newMarker;
+        });
+    }
+
+    function updateIconsBasedOnZoom() {
+        if (!map) return;
+
+        const useCustomIcons = map.getZoom() >= DETAIL_ZOOM;
+        rebuildMarkers(useCustomIcons);
+
+        if (map.getZoom() < DETAIL_ZOOM) {
+            showOverviewContent();
+        } else {
+            updateContent(currentIndex);
+        }
+    }
+
+    function flyToLocation(index, zoom) {
+        const location = jsonData[index];
+        map.flyTo({
+            center: [location.lng, location.lat],
+            zoom: zoom,
+            essential: true
+        });
+    }
+
     function initializeMap() {
-        // Hide placeholder and show real map
         document.getElementById('map-placeholder').style.display = 'none';
         document.getElementById('map').style.display = 'block';
 
-        // Ensure the map container has the proper height
-        window.addEventListener('resize', function() {
-            if (map) {
-                map.invalidateSize();
-            }
+        const first = jsonData[currentIndex];
+        map = new maplibregl.Map({
+            container: 'map',
+            style: MAP_STYLE,
+            center: [first.lng, first.lat],
+            zoom: 13,
+            attributionControl: true
         });
 
-        // Initialize map and layer group for markers
-        map = L.map('map').setView([jsonData[currentIndex].lat, jsonData[currentIndex].lng], 13);
-        markersLayer = L.layerGroup();
+        map.addControl(new maplibregl.NavigationControl(), 'top-right');
 
-        // Base layers
-        const osmTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
+        map.on('load', () => {
+            jsonData.forEach((location, index) => {
+                const element = createMarkerElement(index, false);
+                element.addEventListener('click', () => centerMap(index));
 
+                const marker = new maplibregl.Marker({ element, anchor: 'center' })
+                    .setLngLat([location.lng, location.lat])
+                    .addTo(map);
 
-        jsonData.forEach(function(location, index) {
-            const marker = L.marker([location.lat, location.lng], {
-                icon: customIcons[location.icon]
-            })
-                .on('click', function() {
-                    centerMap(index);
-                });
-            markersLayer.addLayer(marker);
-        });
-
-        // Function to update marker icons based on zoom level
-        function updateIconsBasedOnZoom() {
-            const currentZoom = map.getZoom();
-            const useCustomIcons = currentZoom >= 16; // Threshold for zoom level
-
-            markersLayer.eachLayer(function(marker) {
-                const location = jsonData.find(loc =>
-                    loc.lat === marker.getLatLng().lat && loc.lng === marker.getLatLng().lng
-                );
-                if (location) {
-                    marker.setIcon(useCustomIcons ? customIcons[location.icon] : L.Marker.prototype.options.icon);
-                }
+                mapMarkers.push(marker);
             });
 
-            const locationContentDiv = document.getElementById('location-content');
-            if (currentZoom < 16) {
-                locationContentDiv.innerHTML = `
-                        <div class="text-green-400">
-                            <p>> INITIALIZING MAP SYSTEM...</p>
-                            <p>> LOADING GEOSPATIAL DATA...</p>
-                            <p>> SYSTEM READY</p>
-                            <p class="mt-4">> This map showcases various locations in my professional journey.</p>
-                            <p>> ZOOM IN or SELECT LOCATION for detailed information.</p>
-                            <p>> You can also use the COMMAND LINE to navigate (try 'help' or 'ls').</p>
-                        </div>
-                    `;
-            } else {
-                // Optionally clear the default content when zoomed in
-                updateContent(currentIndex);
-            }
-        }
+            updateIconsBasedOnZoom();
+            initializeContent();
+        });
 
-        // Listen for zoom changes
         map.on('zoomend', updateIconsBasedOnZoom);
 
-        // Initialize icons based on the initial zoom level
-        updateIconsBasedOnZoom();
+        window.addEventListener('resize', () => {
+            if (map) map.resize();
+        });
 
-        // Add markers layer to map
-        markersLayer.addTo(map);
-
-        // Initialize content
-        initializeContent();
-
-        // Make sure map fits the container
-        setTimeout(() => {
-            map.invalidateSize();
-        }, 100);
+        setTimeout(() => map.resize(), 100);
     }
 
     function initializeContent() {
-        if (!map) return; // Safety check
+        if (!map) return;
 
-        const currentZoom = map.getZoom();
-        const locationContentDiv = document.getElementById('location-content');
-
-        if (currentZoom < 16) {
-            locationContentDiv.innerHTML = `
-                    <div class="text-green-400">
-                        <p>> INITIALIZING MAP SYSTEM...</p>
-                        <p>> LOADING GEOSPATIAL DATA...</p>
-                        <p>> SYSTEM READY</p>
-                        <p class="mt-4">> This map showcases various locations in my professional journey.</p>
-                        <p>> ZOOM IN or SELECT LOCATION for detailed information.</p>
-                        <p>> You can also use the COMMAND LINE to navigate (try 'help' or 'ls').</p>
-                    </div>
-                `;
+        if (map.getZoom() < DETAIL_ZOOM) {
+            showOverviewContent();
         } else {
             updateContent(currentIndex);
         }
@@ -690,62 +701,45 @@
         }, 100);
     }
 
-    // Function to center map on a location and update content
     function centerMap(index) {
-        if (!map) return; // Safety check
+        if (!map) return;
 
         currentIndex = index;
-        const location = jsonData[index];
-        map.setView([location.lat, location.lng], 16);
+        flyToLocation(index, DETAIL_ZOOM);
 
-        // Update active dot
         document.querySelectorAll('.retro-dot').forEach((dot, i) => {
             dot.classList.toggle('active', i === index);
         });
 
-        // Update content
         updateContent(index);
     }
 
-    // Event listeners for navigation buttons
     document.getElementById('prev').addEventListener('click', function() {
-        if (!map) return; // Safety check
-
-        const newIndex = (currentIndex - 1 + jsonData.length) % jsonData.length;
-        const location = jsonData[newIndex];
-        map.setView([location.lat, location.lng], 16);
-        centerMap(newIndex);
+        if (!map) return;
+        centerMap((currentIndex - 1 + jsonData.length) % jsonData.length);
     });
 
     document.getElementById('next').addEventListener('click', function() {
-        if (!map) return; // Safety check
-
-        const newIndex = (currentIndex + 1) % jsonData.length;
-        const location = jsonData[newIndex];
-        map.setView([location.lat, location.lng], 16);
-        centerMap(newIndex);
+        if (!map) return;
+        centerMap((currentIndex + 1) % jsonData.length);
     });
 
-    // Event listeners for dots
     document.querySelectorAll('.retro-dot').forEach(dot => {
         dot.addEventListener('click', function() {
-            if (!map) return; // Safety check
-
-            const index = parseInt(this.getAttribute('data-index'));
-            const location = jsonData[index];
-            map.setView([location.lat, location.lng], 16);
-            centerMap(index);
+            if (!map) return;
+            centerMap(parseInt(this.getAttribute('data-index'), 10));
         });
     });
 
     const skills = [
-        { name: "JavaScript", icon: "🟨" },
-        { name: "Leaflet", icon: "🗺️" },
         { name: "Python", icon: "🐍" },
-        { name: "GIS", icon: "🌐" },
+        { name: "MapLibre", icon: "🗺️" },
+        { name: "GeoDjango", icon: "🌍" },
+        { name: "Apache Airflow", icon: "🌬️" },
+        { name: "YOLO", icon: "🎯" },
+        { name: "GIS", icon: "📡" },
+        { name: "JavaScript", icon: "🟨" },
         { name: "HTML/CSS", icon: "📄" },
-        { name: "React", icon: "⚛️" },
-        { name: "Node.js", icon: "🟢" },
         { name: "PostgreSQL", icon: "🐘" },
         { name: "Docker", icon: "🐳" },
         { name: "Git", icon: "📌" },
