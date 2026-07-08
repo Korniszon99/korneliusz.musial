@@ -391,6 +391,7 @@
             <div class="retro-dot" data-index="2"></div>
             <div class="retro-dot" data-index="3"></div>
             <div class="retro-dot" data-index="4"></div>
+            <div class="retro-dot" data-index="5"></div>
             <button id="next" class="retro-button">NEXT→</button>
         </div>
     </div>
@@ -412,6 +413,7 @@
                     <span class="command-suggestion">cd Intermodal</span>
                     <span class="command-suggestion">cd sbx</span>
                     <span class="command-suggestion">cd Skysnap</span>
+                    <span class="command-suggestion">cd Zaklad</span>
                     <span class="command-suggestion">cd github</span>
                     <span class="command-suggestion">help</span>
                     <span class="command-suggestion">ls</span>
@@ -441,7 +443,8 @@
         { iconUrl: './static/logos/intiaro-logo.png', iconSize: [50, 50] },
         { iconUrl: './static/logos/TSL-logo.png', iconSize: [100, 50] },
         { iconUrl: './static/logos/starbucks-logo.png', iconSize: [60, 60] },
-        { iconUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 0 52 52'%3E%3Ccircle cx='26' cy='26' r='24' fill='%23001a0d' stroke='%233dff7a' stroke-width='3'/%3E%3Cpath d='M26 12c-5.52 0-10 4.48-10 10 0 8 10 18 10 18s10-10 10-18c0-5.52-4.48-10-10-10zm0 13.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z' fill='%233dff7a'/%3E%3C/svg%3E", iconSize: [52, 52] }
+        { iconUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 0 52 52'%3E%3Ccircle cx='26' cy='26' r='24' fill='%23001a0d' stroke='%233dff7a' stroke-width='3'/%3E%3Cpath d='M26 12c-5.52 0-10 4.48-10 10 0 8 10 18 10 18s10-10 10-18c0-5.52-4.48-10-10-10zm0 13.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z' fill='%233dff7a'/%3E%3C/svg%3E", iconSize: [52, 52] },
+        { iconUrl: './static/logos/logo-pw-new.png', iconSize: [80, 60] }
     ];
 
     // Enhanced JSON data with descriptions and icon references
@@ -483,8 +486,16 @@
             "shortName": "Skysnap",
             "lat": 52.1855266,
             "lng": 21.025001,
-            "description": "TODO: Add Skysnap description and logo.",
+            "description": "As an AI intern at Skysnap, I worked on a photogrammetric processing pipeline using Apache Airflow and AI-based components. I also trained a YOLO model to detect tie points in photogrammetric images, using SAHI to support robust small-object detection.",
             "icon": 4
+        },
+        {
+            "name": "Zakład Fotogrametrii PW",
+            "shortName": "Zaklad",
+            "lat": 52.2204571,
+            "lng": 21.0105626,
+            "description": "As an intern at the Photogrammetry, Remote Sensing and Spatial Information Systems Department at Warsaw University of Technology, I developed a web service for planning photogrammetric flights with MapLibre, based on a QGIS plugin with the same purpose. I also worked on a portal integrating CesiumJS with Gaussian splats using glTF.",
+            "icon": 5
         }
     ];
 
