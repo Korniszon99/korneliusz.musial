@@ -451,7 +451,7 @@
             "shortName": "PW",
             "lat": 52.2204571,
             "lng": 21.0105626,
-            "description": "I am studying Geoinformatics at Warsaw University of Technology, where I built a strong foundation in spatial data analysis, programming, and application development. I developed a location-based game app for student council integration based on the repository https://github.com/GizaBartosz/FUTPhotoTaskGame, refactored it into Django using emoji-based interaction, and I am currently working on a cross-platform geolocation project in Flutter (mobile and web). At Centrum Informatyzacji Politechniki Warszawskiej, I worked on a flexible financial system for the student council in Django, including testing with Behave and Pytest and development in Docker. I also completed an internship in Zakład Fotogrametrii, Teledetekcji i Systemów Informacji Przestrzennej PW, where I built a web service for planning photogrammetric flights in MapLibre (based on a QGIS plugin) and worked on a portal integrating CesiumJS with Gaussian splats via glTF.",
+            "description": "I am studying Geoinformatics at Warsaw University of Technology, where I built a strong foundation in spatial data analysis, programming, and application development. [...]
             "icon": 0
         },
         {
@@ -459,7 +459,7 @@
             "shortName": "Intiaro",
             "lat": 52.2298661,
             "lng": 20.9709719,
-            "description": "As an IT intern at Intiaro, I developed a microservice from scratch for managing internal data. My responsibilities included asynchronous communication with company APIs using Python, managing a noSQL database in DynamoDB, and creating an admin panel using FastAPI and Refine.",
+            "description": "As an IT intern at Intiaro, I developed a microservice from scratch for managing internal data. My responsibilities included asynchronous communication with company AP[...]
             "icon": 1
         },
         {
@@ -467,7 +467,7 @@
             "shortName": "Intermodal",
             "lat": 52.1525861,
             "lng": 21.0057766,
-            "description": "During my internship at TSL Intermodal, I digitized and organized the company’s physical archives by processing and sorting over 600 documents daily, including invoices and logistics orders.",
+            "description": "During my internship at TSL Intermodal, I digitized and organized the company’s physical archives by processing and sorting over 600 documents daily, including invoi[...]
             "icon": 2
         },
         {
@@ -475,7 +475,7 @@
             "shortName": "sbx",
             "lat": 52.2285053,
             "lng": 21.0028238,
-            "description": "As an Advanced Barista at Starbucks, I developed strong interpersonal skills through daily customer interactions in a fast-paced environment. I honed my teamwork abilities by closely collaborating with colleagues during high-traffic periods, ensuring smooth service and maintaining a positive work atmosphere. This experience also strengthened my adaptability, communication, and responsibility in a professional setting.",
+            "description": "As an Advanced Barista at Starbucks, I developed strong interpersonal skills through daily customer interactions in a fast-paced environment. I honed my teamwork abili[...]
             "icon": 3
         },
         {
@@ -483,7 +483,7 @@
             "shortName": "Skysnap",
             "lat": 52.1855266,
             "lng": 21.025001,
-            "description": "As an AI intern at Skysnap, I worked on a photogrammetric processing pipeline using Apache Airflow and AI-based components. I also trained a YOLO model to detect tie points in photogrammetric images, using SAHI to support robust small-object detection.",
+            "description": "As an AI intern at Skysnap, I worked on a photogrammetric processing pipeline using Apache Airflow and AI-based components. I also trained a YOLO model to detect tie p[...]
             "icon": 4
         }
     ];
@@ -492,6 +492,7 @@
     let currentIndex = 0;
     let map;
     const mapMarkers = [];
+    let lastZoomMode = null; // 'overview' | 'detail'
 
     function typeWriterEffect(element, text, speed = 30) {
         let i = 0;
@@ -612,13 +613,21 @@
     function updateIconsBasedOnZoom() {
         if (!map) return;
 
-        const useCustomIcons = map.getZoom() >= DETAIL_ZOOM;
-        rebuildMarkers(useCustomIcons);
+        const isDetail = map.getZoom() >= DETAIL_ZOOM;
+        const nextZoomMode = isDetail ? 'detail' : 'overview';
 
-        if (map.getZoom() < DETAIL_ZOOM) {
-            showOverviewContent();
-        } else {
+        if (lastZoomMode === nextZoomMode) {
+            return;
+        }
+
+        lastZoomMode = nextZoomMode;
+
+        rebuildMarkers(isDetail);
+
+        if (isDetail) {
             updateContent(currentIndex);
+        } else {
+            showOverviewContent();
         }
     }
 
@@ -659,7 +668,6 @@
             });
 
             updateIconsBasedOnZoom();
-            initializeContent();
         });
 
         map.on('zoomend', updateIconsBasedOnZoom);
@@ -669,16 +677,6 @@
         });
 
         setTimeout(() => map.resize(), 100);
-    }
-
-    function initializeContent() {
-        if (!map) return;
-
-        if (map.getZoom() < DETAIL_ZOOM) {
-            showOverviewContent();
-        } else {
-            updateContent(currentIndex);
-        }
     }
 
     // Function to update content based on current location
