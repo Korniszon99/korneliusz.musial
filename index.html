@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Korneliusz Musiał portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
@@ -494,12 +497,19 @@
     let map;
     const mapMarkers = [];
     let lastZoomMode = null; // 'overview' | 'detail'
+    let typeWriterToken = 0;
+
+    function cancelTypeWriter() {
+        typeWriterToken++;
+    }
 
     function typeWriterEffect(element, text, speed = 30) {
+        const token = typeWriterToken;
         let i = 0;
         element.innerHTML = '';
 
         function type() {
+            if (token !== typeWriterToken) return;
             if (i < text.length) {
                 element.innerHTML += text.charAt(i);
                 i++;
@@ -583,6 +593,7 @@
     }
 
     function showOverviewContent() {
+        cancelTypeWriter();
         document.getElementById('location-content').innerHTML = `
             <div class="text-green-400">
                 <p>> INITIALIZING MAP SYSTEM...</p>
@@ -685,6 +696,7 @@
         const location = jsonData[index];
         const contentDiv = document.getElementById('location-content');
 
+        cancelTypeWriter();
         contentDiv.innerHTML = ''; // Clear current content
 
         // Create elements for the typewriter effect
@@ -702,10 +714,13 @@
         status.innerHTML = `> COORDINATES: [${location.lat.toFixed(6)}, ${location.lng.toFixed(6)}]`;
         contentDiv.appendChild(status);
 
-        // Apply typewriter effect
+        // Capture token so delayed starts are skipped if content is replaced
+        const contentToken = typeWriterToken;
         setTimeout(() => {
+            if (contentToken !== typeWriterToken) return;
             typeWriterEffect(header, `> ${location.name.toUpperCase()}`);
             setTimeout(() => {
+                if (contentToken !== typeWriterToken) return;
                 typeWriterEffect(description, location.description);
             }, location.name.length * 30 + 300);
         }, 100);
@@ -715,6 +730,14 @@
         if (!map) return;
 
         currentIndex = index;
+
+        // Mark detail mode before flyTo so zoomend does not re-run updateContent
+        // (that was restarting the typewriter mid-animation after selecting a marker).
+        if (lastZoomMode !== 'detail') {
+            lastZoomMode = 'detail';
+            rebuildMarkers(true);
+        }
+
         flyToLocation(index, DETAIL_ZOOM);
 
         document.querySelectorAll('.retro-dot').forEach((dot, i) => {
