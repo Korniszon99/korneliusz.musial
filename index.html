@@ -1,56 +1,59 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0a100e"><meta name="description" content="Korneliusz Musiał — Python, computer vision and geospatial software. NeRF, Gaussian Splatting, Django and photogrammetry projects."><title>Korneliusz Musiał — Python &amp; Computer Vision</title><link rel="icon" href="data:,">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f4f2ec"><meta name="description" content="Korneliusz Musiał — Python, computer vision and geospatial software. NeRF, Gaussian Splatting, Django and photogrammetry projects."><title>Korneliusz Musiał — Python &amp; Computer Vision</title><link rel="icon" href="data:,">
 <style>
 :root {
-  color-scheme: dark; --bg:#090f10; --fg:#edf2ef; --soft:#b9c7c0; --mint:#a6efd1;
-  --line:#bfecd533; --header:72px; --mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+  color-scheme: light; --bg:#f4f2ec; --fg:#171715; --soft:#44433f; --ink:#24231f;
+  --line:#24231f38; --header:72px; --mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
 }
 * { box-sizing:border-box }
+html { scroll-behavior:smooth }
 html,body { margin:0; background:var(--bg); color:var(--fg); overflow-x:clip }
 body { font:16px/1.55 'Inter','Helvetica Neue',Arial,sans-serif; }
 a { color:inherit; text-underline-offset:5px }
 button { font:inherit; cursor:pointer }
-:focus-visible { outline:2px solid var(--mint); outline-offset:4px }
+:focus-visible { outline:2px solid var(--ink); outline-offset:4px }
 .skip { position:fixed; z-index:20; top:-5rem; left:12px; padding:8px; background:var(--bg) }
 .skip:focus { top:8px }
 header { height:var(--header); position:fixed; inset:0 0 auto; z-index:10; display:grid; place-items:center;
-  background:linear-gradient(to bottom,#090f10 8%,#090f10ed 65%,transparent) }
+  background:linear-gradient(to bottom,#f4f2ec 8%,#f4f2eced 65%,transparent) }
 header nav,.langs,.outlinks { display:flex; align-items:center; justify-content:center }
 header nav { gap:clamp(16px,2.6vw,42px) }
 header a,.langs button { font:14px/1.5 'Inter',Arial,sans-serif; text-decoration:none; color:var(--soft) }
 header a { position:relative; padding:10px 0 }
-header a[aria-current],header a:hover,.langs button[aria-pressed=true] { color:var(--mint) }
-header a[aria-current]::after { content:''; position:absolute; bottom:4px; height:1px; inset-inline:28%; background:var(--mint) }
-.langs { position:absolute; right:clamp(12px,4vw,68px); gap:3px; font:12px var(--mono); color:#70827d }
+header a[aria-current],header a:hover,.langs button[aria-pressed=true] { color:var(--ink) }
+header a[aria-current]::after { content:''; position:absolute; bottom:4px; height:1px; inset-inline:28%; background:var(--ink) }
+.langs { position:absolute; right:clamp(12px,4vw,68px); gap:3px; font:12px var(--mono); color:#696860 }
 .langs button { padding:8px 4px; background:none; border:0; font:13px var(--mono) }
 .world { position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:0;
-  background:radial-gradient(ellipse at 55% 42%,#142420a8,transparent 63%),var(--bg) }
-main { position:relative; z-index:1; overflow:clip }
+  background:radial-gradient(ellipse at 50% 38%,#fffefa 0%,#f4f2ec 63%,#e2dfd7 100%) }
+main { overflow-anchor:none; position:relative; z-index:1; overflow:clip }
 .station { position:relative; min-height:100vh; min-height:100svh; padding:calc(var(--header) + 32px) max(22px,5vw) 55px; display:grid; align-items:center; justify-items:center; pointer-events:none }
+#projects,#experience { align-items:start; padding-top:max(calc(var(--header) + 28px),18svh) }
 .station:focus { outline:0 }
 .sheet { position:relative; width:min(100%,810px); pointer-events:auto }
 #home .sheet,#contact .sheet { text-align:center }
-.pin { position:relative; width:7px; height:7px; margin:0 auto 35px; background:#d2ffed; border-radius:100%; box-shadow:0 0 0 5px #a0ffd00b,0 0 0 6px #aad7c34a,0 0 18px #76f1b8b3 }
+.pin { position:relative; width:7px; height:7px; margin:0 auto 35px; background:#1c1b19; border-radius:100%; box-shadow:0 0 0 5px #2f2c2412,0 0 0 6px #3c382c60,0 0 18px #302b2359 }
 .eyebrow,.advance,.outlinks,.summary-tech { font:13px/1.5 var(--mono) }
-.eyebrow { color:var(--mint); margin:0 auto 16px }
+.eyebrow { color:var(--ink); margin:0 auto 16px }
 h1,h2,p { margin:0 }
 h1,h2 { font-weight:530; letter-spacing:-.065em; line-height:1.03; text-wrap:balance }
 h1 { font-size:clamp(3.4rem,7.6vw,7.4rem) }
 h2 { font-size:clamp(2.4rem,4.8vw,4.9rem); text-align:center; margin-bottom:clamp(24px,4vh,46px) }
 .intro,.contact-copy { color:var(--soft); font-size:clamp(1rem,1.4vw,1.25rem); line-height:1.58; margin:22px auto 0; max-width:60ch; text-wrap:pretty }
-.advance { margin:30px auto 0; display:inline-flex; align-items:center; gap:11px; text-decoration:none; color:var(--mint); min-height:44px }
+.advance { margin:30px auto 0; display:inline-flex; align-items:center; gap:11px; text-decoration:none; color:var(--ink); min-height:44px }
 .advance i { height:20px; width:12px; position:relative; border:1px solid currentColor; border-radius:6px }
 .advance i::before { content:''; position:absolute; top:4px; left:4px; width:2px; height:5px; background:currentColor }
-.records { border-top:1px solid var(--line); background:linear-gradient(90deg,transparent,#0b1412bd 12% 88%,transparent) }
+.records { border-top:1px solid var(--line); background:linear-gradient(90deg,transparent,#f6f4eedb 12% 88%,transparent) }
+.record[open] { background:#faf9f3d9; box-shadow:0 12px 28px -20px #1b191555 }
 .record { border-bottom:1px solid var(--line) }
-.record summary { display:grid; grid-template-columns:minmax(0,1fr) auto 14px; gap:16px; align-items:center; cursor:pointer; list-style:none; padding:14px 4px; font-weight:550; line-height:1.3; font-size:clamp(1.05rem,1.65vw,1.45rem) }
+.record summary { display:grid; grid-template-columns:minmax(0,1fr) auto 14px; gap:16px; align-items:center; cursor:pointer; list-style:none; padding:14px 12px; font-weight:550; line-height:1.3; font-size:clamp(1.05rem,1.65vw,1.45rem) }
 .record summary::-webkit-details-marker { display:none }
-.record > summary::after { content:'+'; grid-column:3; text-align:center; color:var(--mint); font:20px var(--mono) }
+.record > summary::after { content:'+'; grid-column:3; text-align:center; color:var(--ink); font:20px var(--mono) }
 .record[open] > summary::after { content:'−' }
-.record summary:hover,.record a:hover,.outlinks a:hover,.advance:hover { color:var(--mint) }
-.summary-tech { text-align:right; font-weight:400; color:#a6bbb0; font-size:12px }
-.record-body { padding:0 4px 22px; color:var(--soft); max-width:70ch; }
+.record summary:hover,.record a:hover,.outlinks a:hover,.advance:hover { color:var(--ink) }
+.summary-tech { text-align:right; font-weight:400; color:#57554e; font-size:12px }
+.record-body { padding:0 12px 22px; color:var(--soft); max-width:70ch; }
 .record-body p,.record-body h3 { margin:8px 0 }
-.record-body a { color:var(--mint) }
+.record-body a { color:var(--ink) }
 .record-body img { width:min(100%,500px); height:auto; display:block }
 .record-body details { margin-top:10px }
 .record-body details summary { display:list-item; font-size:1rem }
@@ -60,7 +63,7 @@ h2 { font-size:clamp(2.4rem,4.8vw,4.9rem); text-align:center; margin-bottom:clam
 .enhanced .eye-slot { display:block; height:clamp(105px,24svh,225px) }
 #contact h2 { margin-bottom:12px }
 .contact-copy { margin:0 auto 18px }
-.mail { font-size:clamp(1.15rem,2.4vw,2rem); color:var(--mint); letter-spacing:-.03em; overflow-wrap:anywhere }
+.mail { font-size:clamp(1.15rem,2.4vw,2rem); color:var(--ink); letter-spacing:-.03em; overflow-wrap:anywhere }
 .outlinks { gap:24px; margin:20px auto }
 @media(min-width:701px) { #experience .record > summary { font-size:clamp(1rem,1.4vw,1.25rem) } }
 @media(max-width:700px) {
@@ -183,13 +186,89 @@ Oct 2023 - Present | Expected thesis defence: September 2027 · English - confid
   }
   grain(-.047,-.09,'light');
 
+
+  // Give each small cluster one depth so its short edges stay attached during a flight.
+  const clusters = [];
+  for (let column = -2; column <= 15; column++) {
+    for (let row = -2; row <= 3; row++) {
+      const points = [];
+      const edges = [];
+      const count = 5 + Math.floor(random() * 6);
+      const spread = .045 + random() * .084;
+      for (let n = 0; n < count; n++) {
+        const x = (random() - .5) * 2, y = (random() - .5) * 2;
+        const neighbours = points.map((p, idx) => ({idx, d: (p.x-x)**2 + (p.y-y)**2}));
+        neighbours.sort((a,b) => a.d - b.d);
+        for (const near of neighbours.slice(0,n % 3 === 0 ? 2 : 1)) {
+          if (near.d < 1.8) edges.push([near.idx,n]);
+        }
+        points.push({x,y,r:.8+random()*.85});
+      }
+      clusters.push({x:(column+random()*.78)*.46, y:(row+random()*.8)*.45,
+        depth:.78+random()*.4, points, edges, spread});
+    }
+  }
+  function drawClusters(w,h,camX,camY,blend) {
+    if (blend === 1) return;
+    const unit = Math.min(w, h*1.4);
+    ctx.strokeStyle='rgba(35,33,28,' + .26*(1-blend) + ')';
+    ctx.fillStyle='rgba(35,33,28,' + .60*(1-blend) + ')';
+    ctx.lineWidth=.8;
+    for (const cluster of clusters) {
+      const x=(.5+(cluster.x-camX)*cluster.depth)*w;
+      const y=(.37+(cluster.y-camY)*cluster.depth)*h;
+      const radius=cluster.spread*unit;
+      if (x < -radius || x > w+radius || y < -radius || y > h+radius) continue;
+      ctx.beginPath();
+      for (const [a,b] of cluster.edges) {
+        const p=cluster.points[a], q=cluster.points[b];
+        ctx.moveTo(x+p.x*radius,y+p.y*radius);
+        ctx.lineTo(x+q.x*radius,y+q.y*radius);
+      }
+      ctx.stroke();
+      ctx.beginPath();
+      for (const p of cluster.points) {
+        const px=x+p.x*radius, py=y+p.y*radius;
+        ctx.moveTo(px+p.r,py);
+        ctx.arc(px,py,p.r,0,tau);
+      }
+      ctx.fill();
+    }
+  }
+
+  // Changing a row's height must not convert reading progress into camera travel.
+  // Measure the clicked label without its sheet transform, then retain only the
+  // room needed to keep that label at the same position in the viewport.
+  const readingStations = stations.filter(station => station.querySelector('.record'));
+  for (const station of readingStations) {
+    const sheet = station.querySelector('.sheet');
+    station.addEventListener('click', event => {
+      const summary = event.target.closest('summary');
+      if (!summary || event.defaultPrevented || event.button !== 0) return;
+      const details = summary.parentElement;
+      if (details.tagName !== 'DETAILS') return;
+      event.preventDefault();
+      const screenTop = summary.getBoundingClientRect().top;
+      details.open = !details.open;
+      station.style.minHeight = '';
+      const labelTop = sheet.offsetTop + summary.getBoundingClientRect().top - sheet.getBoundingClientRect().top;
+      const localY = Math.max(0, labelTop - screenTop);
+      const needed = Math.ceil(localY + canvas.clientHeight);
+      if (needed > station.offsetHeight) station.style.minHeight = needed + 'px';
+      summary.focus({preventScroll:true});
+      window.scrollTo({top:station.offsetTop + localY, behavior:'instant'});
+      update();
+    });
+  }
+
   function pose(y,h) {
     const tops=stations.map(section=>section.offsetTop);
     const limit=Math.max(0,document.documentElement.scrollHeight-h);
     for(let i=0;i<stops.length-1;i++) {
       const arrival=Math.min(tops[i+1],limit);
       if(y<arrival) {
-        const end=tops[i]+Math.max(0,stations[i].offsetHeight-h);
+        const readingMargin = readingStations.includes(stations[i]) ? Math.min(70, h*.09) : 0;
+        const end=tops[i]+Math.max(0,stations[i].offsetHeight-h)+readingMargin;
         const t=clamp((y-end)/Math.max(1,arrival-end));
         return {i,t,tops};
       }
@@ -212,6 +291,10 @@ Oct 2023 - Present | Expected thesis defence: September 2027 · English - confid
     }
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
     const y=clamp(window.scrollY,0,Math.max(0,document.documentElement.scrollHeight-h));
+    // Reclaim a temporary reading margin only when the station is still ahead.
+    for (const station of readingStations) {
+      if (station.style.minHeight && station.offsetTop > y+h) station.style.minHeight = '';
+    }
     const {i,t,tops}=pose(y,h), j=Math.min(i+1,stops.length-1);
     const u=smooth(t);
     const active=t<.5?i:j;
@@ -243,6 +326,7 @@ Oct 2023 - Present | Expected thesis defence: September 2027 · English - confid
     });
     const contact=coords[3];
     const size=Math.min(w*.39,document.querySelector('.eye-slot').offsetHeight*1.08,290);
+    drawClusters(w,h,quiet?0:camX,quiet?0:camY,blend);
     // A continuous curve passes through the actual DOM pins, including after a language change.
     if (!quiet && blend<1) {
       ctx.beginPath();
@@ -253,7 +337,7 @@ Oct 2023 - Present | Expected thesis defence: September 2027 · English - confid
         const a=coords[k-1], b=coords[k], dx=b.x-a.x;
         ctx.bezierCurveTo(a.x+dx*.32,a.y-.25*h,b.x-dx*.35,b.y-.20*h,b.x,b.y);
       }
-      ctx.strokeStyle='rgba(139,214,180,'+(.52*(1-blend))+')';ctx.lineWidth=1;ctx.stroke();
+      ctx.strokeStyle='rgba(54,51,44,'+(.52*(1-blend))+')';ctx.lineWidth=1;ctx.stroke();
     }
     const projected=dust.map(p=>{
       const x=(.5+(p.x-(quiet?0:camX))*p.depth)*w;
@@ -262,19 +346,19 @@ Oct 2023 - Present | Expected thesis defence: September 2027 · English - confid
     });
     if(blend>0) {
       for(const group of ['upper','lower','iris','pupil']) {
-        strokePath(projected.filter((_,k)=>dust[k].group===group),'rgba(154,229,193,'+(.60*blend**3)+')',1,group==='iris'||group==='pupil');
+        strokePath(projected.filter((_,k)=>dust[k].group===group),'rgba(38,36,31,'+(.60*blend**3)+')',1,group==='iris'||group==='pupil');
       }
       dust.forEach((p,k)=>{
         if(p.group!=='fibre')return;
         const [x,y]=projected[k];
-        strokePath([[x,y],[x+p.xEnd*size*.25,y+(p.yEnd+.028)*size*.25]],'rgba(164,231,197,'+.52*blend**4+')');
+        strokePath([[x,y],[x+p.xEnd*size*.25,y+(p.yEnd+.028)*size*.25]],'rgba(49,45,39,'+.52*blend**4+')');
       });
     }
     projected.forEach(([x,y],k)=>{
       if(x< -3||y< -3||x>w+3||y>h+3)return;
       const p=dust[k], radius=p.group==='light'?2.2:(.52+p.light*.92);
       ctx.beginPath();ctx.arc(x,y,radius,0,tau);
-      ctx.fillStyle='rgba(190,245,216,'+(p.light*lerp(.84,1,blend))+')';ctx.fill();
+      ctx.fillStyle='rgba(34,33,30,'+(p.light*lerp(.84,1,blend))+')';ctx.fill();
     });
   }
   window.addEventListener('scroll',update,{passive:true});
