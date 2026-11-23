@@ -1,42 +1,335 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0e1713"><meta name="description" content="Korneliusz Musiał — Python, computer vision and geospatial software. NeRF, Gaussian Splatting, Django and photogrammetry projects."><title>Korneliusz Musiał — Python &amp; Computer Vision</title><link rel="icon" href="data:,"><style>
-:root{--bg:#0e1713;--panel:#16231b;--ink:#f2f3e9;--muted:#b4c2b5;--green:#ceff86;--line:#354739;--paper:#f0f2e9;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:30px}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;line-height:1.6}button,input{font:inherit}a{color:inherit;text-underline-offset:5px}button{cursor:pointer;touch-action:manipulation}img,svg{max-width:100%;display:block}h1,h2,h3,p{margin-top:0}::selection{background:var(--green);color:var(--bg)}:focus-visible{outline:3px solid #92cfff;outline-offset:4px}.wrap{max-width:1180px;margin:auto;padding:0 36px}.eyebrow,.tag,.small,.date{font-family:var(--mono)}.eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}.skip{position:absolute;top:-100px;background:var(--green);color:#000;padding:10px;z-index:20}.skip:focus{top:10px}header{border-bottom:1px solid var(--line)}.nav{min-height:85px;display:flex;align-items:center;gap:30px}.brand{font-size:21px;font-weight:800;text-decoration:none;margin-right:auto;letter-spacing:-1px}.brand span{color:var(--green)}nav{display:flex;gap:24px;font-size:13px}nav a{text-decoration:none;color:var(--muted)}.language{display:flex;border:1px solid var(--line);border-radius:25px;padding:4px;gap:3px}.language button{background:none;border:0;color:var(--ink);padding:6px 9px;font-size:12px;border-radius:20px}.language button[aria-pressed=true]{background:var(--green);color:var(--bg)}.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:45px;align-items:center;padding-top:65px;padding-bottom:60px}.hero h1{font-size:clamp(50px,6.2vw,82px);line-height:1.03;letter-spacing:-.065em;margin:21px 0}.hero h1 span{color:var(--green)}.role{font-size:22px;letter-spacing:-.02em}.intro{color:var(--muted);font-size:15px;max-width:540px}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:25px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:16px;border:1px solid var(--line);border-radius:5px;background:none;color:var(--ink);padding:12px 17px;text-decoration:none;font-size:13px;font-weight:600}.btn.primary{background:var(--green);border-color:var(--green);color:var(--bg)}.btn:hover{border-color:var(--green)}.small{color:var(--muted);font-size:10px}.scene{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:radial-gradient(ellipse,#253b28,#101b15)}.bar,.scene figcaption{font:10px var(--mono);color:var(--muted);padding:14px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}.scene figcaption{border:0;border-top:1px solid var(--line)}.scene svg{width:100%}.strip{display:flex;justify-content:space-between;gap:20px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding-top:17px;padding-bottom:17px;font:11px var(--mono);color:var(--muted)}.strip b{color:var(--green);font-weight:400}section{padding:65px 0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:30px}.section-head h2{font-size:35px;letter-spacing:-.04em;line-height:1.2;margin:12px 0 0}.section-head>p{font-size:14px;color:var(--muted);max-width:345px;margin:0}.project-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.project{border:1px solid var(--line);border-radius:9px;overflow:hidden}.project.featured{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr}.art{height:220px;padding:25px;background:#1b2d20;display:flex;align-items:center;justify-content:center}.featured .art{height:auto;min-height:300px}.art svg{width:100%;height:100%;max-height:270px}.art.photo{background:#edf1e7}.art img{width:100%;height:100%;object-fit:contain}.project-body{padding:29px}.project h3{font-size:25px;line-height:1.2;letter-spacing:-.03em;margin:13px 0}.project p{font-size:14px;color:var(--muted)}.tags{display:flex;flex-wrap:wrap;gap:7px}.tag{font-size:10px;color:var(--green);padding:3px 7px;border:1px solid #486039;border-radius:3px}.detail{border-top:1px solid var(--line);padding-top:13px;margin-top:18px;font-size:12px!important}.project-link{font-size:13px;font-weight:600}.light{background:var(--paper);color:#18271d}.light .eyebrow,.light .section-head>p{color:#516357}.experience{display:grid;grid-template-columns:200px 1fr;gap:30px;border-top:1px solid #c7d2c7;padding:21px 0}.date{font-size:11px;color:#5a695f}.experience h3{font-size:18px;letter-spacing:-.02em;margin-bottom:4px}.experience .org{font-size:13px;font-weight:700;margin-bottom:5px}.experience p{color:#4b5d50;font-size:14px;margin-bottom:4px}.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;border-top:1px solid #c7d2c7;margin-top:15px;padding-top:26px}.skills h3{font-size:15px}.skills p,.education{font-size:13px;color:#516357}.education{border-top:1px solid #c7d2c7;padding-top:20px;margin-top:20px}.explore{display:grid;grid-template-columns:1fr 1fr;gap:24px}.terminal,.map-panel{border:1px solid var(--line);border-radius:9px;overflow:hidden}.terminal-body{padding:20px;font:12px/1.7 var(--mono)}#terminal-output{height:110px;overflow:auto;white-space:pre-wrap;color:var(--green)}.cmd{display:flex;gap:10px;align-items:center}.cmd label{color:var(--green)}.cmd input{background:transparent;border:0;border-bottom:1px solid var(--line);color:var(--ink);padding:10px 0;min-width:0;flex:1;font:12px var(--mono)}.cmd button,.command-buttons button{background:transparent;border:1px solid var(--line);color:var(--ink);padding:7px 10px;border-radius:4px}.command-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}.command-buttons button{font:10px var(--mono)}#map-placeholder{padding:25px;min-height:210px;background:repeating-linear-gradient(35deg,transparent 0 35px,#233a2a 36px 37px,transparent 38px 70px)}#map-placeholder p{font-size:13px;background:var(--bg);padding:6px;max-width:320px}#map{height:260px}.map-options{display:flex;gap:12px;padding:10px 16px}.map-options button{font:11px var(--mono);color:var(--green);border:0;background:transparent;padding:5px}.maplibregl-popup{color:#111}.maplibregl-ctrl-attrib{color:#222}.maplibregl-ctrl-attrib a{color:#222}.contact{display:flex;justify-content:space-between;align-items:center;gap:40px;padding-top:45px;padding-bottom:45px;border-top:1px solid var(--line)}.contact h2{font-size:31px;letter-spacing:-.04em;margin-bottom:8px}.contact p{font-size:14px;color:var(--muted);margin-bottom:0}.contact-links{text-align:right;font-size:14px;line-height:2.3}.mail{color:var(--green);font-size:17px}footer{padding:21px 0;border-top:1px solid var(--line);font:10px var(--mono);color:var(--muted)}footer .wrap{display:flex;justify-content:space-between;gap:15px}[hidden]{display:none!important}@media(max-width:820px){.wrap{padding-left:24px;padding-right:24px}.hero{gap:25px}.hero h1{font-size:58px}.project.featured{grid-template-columns:1fr}.featured .art{min-height:220px;height:240px}.experience{grid-template-columns:155px 1fr}}@media(max-width:620px){.wrap{padding-left:20px;padding-right:20px}.nav{flex-wrap:wrap;gap:14px;padding-top:18px;padding-bottom:15px}nav{order:3;width:100%;justify-content:space-between}.hero{grid-template-columns:1fr;padding-top:40px;padding-bottom:40px}.hero h1{font-size:62px}.role{font-size:20px}.scene{max-width:440px}.strip{flex-direction:column;gap:8px}section{padding:44px 0}.section-head{display:block}.section-head h2{font-size:30px}.section-head>p{margin-top:14px}.project-grid,.explore,.skills{grid-template-columns:1fr}.project-body{padding:24px}.experience{grid-template-columns:1fr;gap:6px}.skills{gap:15px}.contact{flex-direction:column;align-items:flex-start;gap:22px}.contact-links{text-align:left}footer .wrap{flex-direction:column}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}@media print{header,.scene,.explore,.actions,footer{display:none}.hero{display:block;padding:10px 0}.hero h1{font-size:40px}body,.light{background:white;color:black}.hero h1 span,.intro,.project p,.date,.eyebrow,.small,.section-head>p,.mail{color:black}.wrap{padding:0}.project,.experience{break-inside:avoid}.art{display:none}.project.featured{display:block}section{padding:20px 0}}
-</style></head><body>
-<a class="skip" href="#main">Skip to content</a><header><div class="wrap nav"><a class="brand" href="#main">kornel<span>.dev</span></a><nav aria-label="Main navigation"><a href="#projects"><span class="" data-pl="Projekty">Projects</span></a><a href="#experience"><span class="" data-pl="Doświadczenie">Experience</span></a><a href="#contact"><span class="" data-pl="Kontakt">Contact</span></a></nav><div class="language" aria-label="Language"><button data-lang="en" aria-pressed="true">EN</button><button data-lang="pl" aria-pressed="false">PL</button></div></div></header><main id="main">
-<div class="wrap hero"><div><div class="eyebrow" data-pl="Warszawa · Python · Computer vision">Warsaw · Python · Computer vision</div><h1>Korneliusz<br><span>Musiał.</span></h1><p class="role" data-pl="Obrazy, geometria i oprogramowanie.">Images, geometry &amp; software.</p><p class="intro" data-pl="Rozwijam aplikacje w Pythonie i pracuję z danymi obrazowymi. Łączę doświadczenie z YOLO, fotogrametrii i backendu Django. Mój kierunek: techniczne AI i computer vision.">I develop Python applications and work with visual data. My experience spans YOLO, photogrammetry and Django backends. My next direction: technically focused AI and computer vision.</p><div class="actions"><a class="btn primary" href="#projects"><span class="" data-pl="Zobacz projekty ↗">Explore my projects ↗</span></a><a class="btn" id="request-cv" href="mailto:kornel.musial@gmail.com?subject=CV%20request"><span class="" data-pl="Poproś o CV ↗">Request CV ↗</span></a></div><p id="cv-status" class="small" role="status"></p><p class="small" data-pl="↳ Geoinformatyka PW · planowana obrona IX 2027">↳ Geoinformatics at WUT · expected defence Sep 2027</p></div>
-<figure class="scene"><div class="bar"><span>SCENE / 001</span><span>IMAGE → GEOMETRY</span></div><svg viewBox="0 0 500 380" role="img" aria-label="Illustration of camera viewpoints and a point cloud"><defs><pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#39503c" stroke-width=".5"/></pattern></defs><rect width="500" height="380" fill="url(#grid)"/><g fill="none" stroke="#75975e"><ellipse cx="250" cy="190" rx="183" ry="80" transform="rotate(-25 250 190)"/><ellipse cx="250" cy="190" rx="125" ry="130" transform="rotate(30 250 190)" stroke-dasharray="3 7"/><path d="M250 45V335M75 270L425 110M75 110L425 270" stroke="#405b41"/></g><g id="point-cloud"></g><g stroke="#ceff86" fill="#192e1c"><path d="M70 225l24-15 4 29zM420 150l-25-13 2 29zM277 57l-15 24 29 0z"/><path d="M87 225L235 203M405 150L266 188M277 74L251 179" fill="none" stroke-dasharray="4 5" opacity=".55"/></g><path d="M25 32v-12h12M475 32v-12h-12M25 348v12h12M475 348v12h-12" fill="none" stroke="#ceff86"/><g font-family="monospace" font-size="10" fill="#b7c8b4"><text x="34" y="340">x</text><text x="452" y="340">y</text><text x="242" y="35">z</text></g></svg><figcaption class="" data-pl="Ilustracja geometrii sceny · nie wynik rekonstrukcji">Scene geometry illustration · not a reconstruction result</figcaption></figure></div>
-<div class="wrap strip"><span><b>01</b> YOLO / GCP detection</span><span><b>02</b> NeRF / Gaussian Splatting</span><span><b>03</b> Python / geospatial backends</span></div>
-<section id="projects"><div class="wrap"><div class="section-head"><div><div class="eyebrow">01 / SELECTED WORK</div><h2 class="" data-pl="Kod i konkretne problemy.">Code behind the projects.</h2></div><p class="" data-pl="Trzy projekty pokazujące pracę z obrazami, geometrią i backendem.">Three projects covering images, geometry and backend engineering.</p></div><div class="project-grid">
-<article class="project featured"><div class="art"><svg viewBox="0 0 460 260" role="img" aria-label="Images and poses flow into Nerfstudio runs and reconstruction artifacts"><g fill="none" stroke="#668b56"><path d="M110 65L200 130L110 195M270 130H350" stroke-dasharray="5 5"/><rect x="15" y="30" width="105" height="70" rx="5"/><rect x="15" y="160" width="105" height="70" rx="5"/><rect x="175" y="90" width="115" height="80" rx="5"/><rect x="340" y="90" width="105" height="80" rx="5"/></g><g font-family="monospace" text-anchor="middle" font-size="12" fill="#ceff86"><text x="67" y="69">images</text><text x="67" y="200">poses</text><text x="233" y="125">Nerfstudio</text><text x="233" y="145" font-size="10" fill="#b4c2b5">training runs</text><text x="392" y="125">artifacts</text><text x="392" y="145" font-size="10" fill="#b4c2b5">logs / PLY</text></g><text x="230" y="252" font-family="monospace" text-anchor="middle" font-size="10" fill="#b4c2b5">DJANGO EXPERIMENT WORKBENCH</text></svg></div><div class="project-body"><div class="eyebrow">RESEARCH PROTOTYPE</div><h3 class="" data-pl="NeRF vs Gaussian Splatting">NeRF vs Gaussian Splatting</h3><p class="" data-pl="Aplikacja Django do zarządzania zbiorami obrazów, pozycjami kamer, uruchomieniami Nerfstudio, logami i artefaktami rekonstrukcji.">Django application for managing image datasets, camera poses, Nerfstudio runs, logs and reconstruction artifacts.</p><div class="tags"><span class="tag">Python</span><span class="tag">Django</span><span class="tag">Nerfstudio</span><span class="tag">3D vision</span></div><p class="detail" data-pl="Testy aplikacji mockują trening. Benchmark jakości na wydzielonych widokach to kolejny etap. Podgląd PLY pokazuje chmurę punktów.">Application tests mock training. A held-out quality benchmark is the next milestone. The PLY preview displays point clouds.</p><a class="project-link" href="https://github.com/Korniszon99/nerf_vs_gaussian"><span class="" data-pl="Kod i dokumentacja ↗">Source &amp; documentation ↗</span></a></div></article>
-<article class="project"><div class="art"><svg viewBox="0 0 430 180" role="img" aria-label="EuroRace architecture"><g stroke="#608653" fill="none"><path d="M88 90H168M258 90H340M215 118V150"/><rect x="15" y="63" width="90" height="54" rx="5"/><rect x="168" y="63" width="90" height="54" rx="5"/><rect x="325" y="63" width="90" height="54" rx="5"/></g><g font-family="monospace" fill="#ceff86" text-anchor="middle" font-size="12"><text x="60" y="95">client</text><text x="213" y="95">Django</text><text x="370" y="95">PostGIS</text><text x="215" y="168" fill="#b4c2b5" font-size="10">Channels / Redis</text><text x="215" y="30" fill="#b4c2b5" font-size="10">REST + WEBSOCKETS</text></g></svg></div><div class="project-body"><div class="eyebrow">BACKEND / SPATIAL DATA</div><h3 class="" data-pl="EuroRace Backend">EuroRace Backend</h3><p class="" data-pl="Backend Django REST Framework i GeoDjango/PostGIS do obsługi lokalizacji uczestników i zadań.">Django REST Framework and GeoDjango/PostGIS backend for participant locations and event tasks.</p><div class="tags"><span class="tag">Django REST</span><span class="tag">PostGIS</span><span class="tag">WebSockets</span></div><p class="detail" data-pl="W repo są Docker Compose i testy obsługi lokalizacji. Wdrożenie produkcyjne wymaga przygotowania konfiguracji.">Docker Compose and location handling tests are in the repository. Production deployment requires configuration hardening.</p><a class="project-link" href="https://github.com/Korniszon99/eurorace_backend"><span class="" data-pl="Kod i dokumentacja ↗">Source &amp; documentation ↗</span></a></div></article>
-<article class="project"><div class="art photo"><img src="https://raw.githubusercontent.com/Korniszon99/fotogrametia_projekt_nalotu/main/img_1.png" loading="lazy" width="600" height="350" alt="Screenshot of the flight planner from its repository"></div><div class="project-body"><div class="eyebrow">GEOMETRY / IMAGE ACQUISITION</div><h3 class="" data-pl="Planowanie nalotów fotogrametrycznych">Photogrammetric Flight Planner</h3><p class="" data-pl="Edukacyjna aplikacja Django obliczająca parametry nalotu na podstawie GSD, geometrii kamery i pokrycia zdjęć.">Educational Django application calculating flight parameters from target GSD, camera geometry and image overlap.</p><div class="tags"><span class="tag">Django</span><span class="tag">Camera geometry</span><span class="tag">Matplotlib</span></div><p class="detail" data-pl="Model dydaktyczny dla płaskiego terenu. Ograniczenia obliczeń są opisane w README.">Educational flat-ground model. Calculation limitations are documented in the README.</p><a class="project-link" href="https://github.com/Korniszon99/fotogrametia_projekt_nalotu"><span class="" data-pl="Kod i dokumentacja ↗">Source &amp; documentation ↗</span></a></div></article>
-</div></div></section>
-<section id="experience" class="light"><div class="wrap"><div class="section-head"><div><div class="eyebrow">02 / EXPERIENCE</div><h2 class="" data-pl="Od danych do aplikacji.">From data to applications.</h2></div><p class="" data-pl="Doświadczenie stażowe w AI, fotogrametrii, backendzie i automatyzacji.">Internship experience in AI, photogrammetry, backend development and automation.</p></div>
-<article class="experience"><div class="date" data-pl="09.2026 - obecnie">Sep 2026 - Present</div><div><div class="org" data-pl="Polpharma">Polpharma</div><h3 class="" data-pl="Stażysta AI">AI Intern</h3><p class="" data-pl="Automatyzuję uzupełnianie słowników produktowych dla działu finansowego z wykorzystaniem Power Automate i Copilot Studio. Zajmuję się analizą danych i Power BI.">Automate product dictionary completion for the finance department using Power Automate and Copilot Studio. Work on data analysis and Power BI.</p></div></article>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0a100e"><meta name="description" content="Korneliusz Musiał — Python, computer vision and geospatial software. NeRF, Gaussian Splatting, Django and photogrammetry projects."><title>Korneliusz Musiał — Python &amp; Computer Vision</title><link rel="icon" href="data:,">
+<style>
+:root {
+  color-scheme: dark;
+  --ink: #edf2ee;
+  --muted: #a6b4af;
+  --faint: #81918b;
+  --line: #304039;
+  --accent: #adfacf;
+  --bg: #0a100e;
+  --mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  --nav-height: 68px;
+}
+* { box-sizing: border-box }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-height) + 12px) }
+body { margin: 0; font: 16px/1.55 'Inter', Arial, sans-serif; color: var(--ink); background: var(--bg) }
+a { color: inherit; text-underline-offset: 4px }
+button { font: inherit; color: inherit; cursor: pointer }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px }
+.skip { position: fixed; left: 1rem; top: -5rem; z-index: 10; background: var(--ink); color: var(--bg); padding: .6rem }
+.skip:focus { top: .5rem }
+.top { position: sticky; top: 0; z-index: 5; background: #0a100ef7; border-bottom: 1px solid var(--line) }
+.bar, .layout, .foot { max-width: 1510px; margin: auto; padding-inline: clamp(18px,4.6vw,78px) }
+.bar { min-height: var(--nav-height); display: flex; align-items: center; gap: 32px }
+.brand { margin-right: auto; text-decoration: none; font-weight: 700; letter-spacing: -.045em; font-size: 20px }
+.brand::before { content: ''; display: inline-block; width: 14px; height: 14px; border-radius: 90% 0; border: 1.5px solid var(--accent); transform: rotate(45deg); margin-right: 12px; background: radial-gradient(circle,var(--accent) 0 19%,transparent 23%) }
+.top nav { display: flex; gap: 20px }
+.top nav a, .language button { font: 12px var(--mono); text-decoration: none; color: var(--muted) }
+.top nav a:hover, .language button[aria-pressed=true] { color: var(--accent) }
+.language { display: flex; border-left: 1px solid var(--line); padding-left: 13px }
+.language button { border: none; background: transparent; min-width: 34px; min-height: 40px }
+.layout { display: grid; grid-template-columns: minmax(0, .87fr) minmax(0,1.13fr); gap: clamp(25px,5vw,90px); position: relative }
+.story { grid-column: 1; grid-row: 1 }
+.chapter { padding-block: 60px; border-bottom: 1px solid var(--line) }
+.hero, #contact { display: flex; min-height: calc(100svh - var(--nav-height)); flex-direction: column; justify-content: center; align-items: flex-start }
+.hero { padding-bottom: 12vh }
+.meta,.date,.stack,.scene-caption,.foot { font: 12px/1.55 var(--mono); color: var(--muted) }
+.meta { letter-spacing: .05em }
+h1,h2,h3,p { margin: 0 }
+h1 { margin: 19px 0 20px; font-size: clamp(58px,6.8vw,104px); line-height: .95; letter-spacing: -.075em; font-weight: 550 }
+h1 span { display: block; color: var(--accent) }
+h2 { font-size: clamp(35px,4vw,60px); letter-spacing: -.06em; line-height: 1.04; font-weight: 520; margin: 12px 0 28px }
+h3 { font-size: 22px; line-height: 1.18; letter-spacing: -.035em }
+.lead { max-width: 43ch; font-size: clamp(16px,1.45vw,20px); color: #c7d4cd }
+.actions { display: flex; gap: 10px 16px; flex-wrap: wrap; align-items: center; margin-top: 28px }
+.primary,.secondary { font: 13px/1.4 var(--mono); padding: 12px 15px; border-radius: 3px; text-decoration: none }
+.primary { background: var(--accent); color: #102018 }
+.secondary { color: var(--ink); border: 1px solid var(--line) }
+.chapter article { padding: 23px 0; border-top: 1px solid var(--line) }
+.chapter article p, .skills p, .education { font-size: 15px; color: var(--muted); margin: 10px 0 }
+.project-link { font: 12px/1.6 var(--mono); color: var(--accent) }
+.stack { color: #a0cfb4; margin-top: 12px }
+details { margin: 13px 0; font-size: 14px }
+summary { color: #bdc9c2; cursor: pointer }
+details img { display: block; max-width: 100%; height: auto; margin-top: 10px }
+.org { font-weight: 650; margin: 6px 0 3px }
+.experience h3 { font-size: 17px; font-weight: 500 }
+.education { border-top: 1px solid var(--line); padding-top: 18px; white-space: pre-line }
+.skills { margin-top: 22px }
+.skills h3 { font-size: 16px }
+.skills p { margin: 4px 0 15px }
+#contact { border: none }
+#contact .mail { color: var(--accent); font-size: clamp(17px,1.8vw,26px); overflow-wrap:anywhere }
+.foot { padding-block: 14px; border-top: 1px solid var(--line); color: var(--faint) }
+.scene { grid-column: 2; grid-row: 1; position: sticky; top: var(--nav-height); align-self: start; height: calc(100svh - var(--nav-height)); display:grid; align-content:center; z-index:2 }
+.field { position:relative; width:100%; aspect-ratio: 1.18; max-height: 74svh; overflow: hidden; isolation: isolate; background: radial-gradient(ellipse at 50% 51%,#17281f 0%,#101b16 35%,transparent 69%) }
+canvas { width: 100%; height: 100%; display: block }
+.point { position:absolute; display:grid; place-items:center; min-width:44px; min-height:44px; transform: translate(-50%,-50%); text-decoration:none; border-radius:50%; color:var(--muted) }
+.point::before { content:''; box-sizing:border-box; width:7px; height:7px; background:var(--ink); border:1px solid #acdbc1; border-radius:50%; box-shadow:0 0 10px #b5fdd55e }
+.point[aria-current=location]::before,.point:hover::before,.point:focus-visible::before { width:12px;height:12px;background:var(--accent);box-shadow:0 0 0 5px #b5fdd51a,0 0 0 6px #b5fdd54a,0 0 20px #b5fdd552 }
+.point span { position:absolute; bottom:calc(50% + 12px); left:50%; transform:translateX(-50%); font:10px/1.3 var(--mono); white-space:nowrap; color:#c1d4c8; text-shadow:0 1px 4px var(--bg) }
+.point[aria-current=location] span {color:var(--accent)}
+.scene-caption { display:flex; align-items:center; justify-content:space-between; gap:10px; border-top:1px solid var(--line); padding:12px 2px 0; font-size:11px }
+.current-section { color:var(--accent) }
+@media (max-width:760px) {
+ :root { --nav-height:56px; --field-height:min(26svh,210px) }
+ html { scroll-padding-top:calc(var(--nav-height) + var(--field-height) + 38px) }
+ .top nav { display:none }.bar { gap:8px }.layout { display:block }.brand{font-size:18px}
+ .scene { top:var(--nav-height); height:auto; background:var(--bg); border-bottom:1px solid var(--line); padding:0; margin-inline:-4px }
+ .field { aspect-ratio:auto; height:var(--field-height); max-height:none }
+ .scene-caption { padding:3px 5px 5px; border:0;font-size:10px }
+ .hero,#contact { min-height:calc(100svh - var(--nav-height) - var(--field-height) - 25px); padding:32px 0 }
+ .chapter { padding-block:40px }.hero h1{font-size:clamp(52px,11vw,72px)}
+ .hero .lead{font-size:16px}.actions{margin-top:18px}.point span{font-size:9px;bottom:calc(50% + 8px)}
+}
+@media (max-height:490px) and (max-width:760px) { :root { --field-height:100px } .field { height:var(--field-height) } .scene-caption { display:none } }
+@media (prefers-reduced-motion:reduce) { html{scroll-behavior:auto} }
+
+</style>
+</head>
+<body>
+<a class="skip" href="#content" data-pl="Przejdź do treści">Skip to content</a>
+<header class="top"><div class="bar">
+  <a class="brand" href="#home">Korneliusz Musiał</a>
+  <nav aria-label="Menu"><a href="#projects"><span data-pl="Projekty">Projects</span></a>
+<a href="#experience"><span data-pl="Doświadczenie">Experience</span></a>
+<a href="#contact"><span data-pl="Kontakt">Contact</span></a></nav>
+  <div class="language"><button type="button" data-lang="en" aria-label="English" aria-pressed="true">EN</button><button type="button" data-lang="pl" aria-label="Polski" aria-pressed="false">PL</button></div>
+</div></header>
+<div class="layout">
+  <aside class="scene">
+    <nav class="field" aria-label="Portfolio">
+      <canvas aria-hidden="true"></canvas>
+      <a class="point" href="#home" style="left:25%;top:60%"><span data-pl="O mnie">About</span></a>
+<a class="point" href="#projects" style="left:42%;top:28%"><span data-pl="Projekty">Projects</span></a>
+<a class="point" href="#experience" style="left:64%;top:70%"><span data-pl="Doświadczenie">Experience</span></a>
+<a class="point" href="#contact" style="left:80%;top:40%"><span data-pl="Kontakt">Contact</span></a>
+    </nav>
+    <div class="scene-caption"><span data-pl="Przewiń lub wybierz punkt">Scroll or select a point</span><span class="current-section" aria-hidden="true">About</span></div>
+  </aside>
+  <main class="story" id="content" tabindex="-1">
+    <section class="chapter hero" id="home" aria-labelledby="name">
+      <p class="meta" data-pl="Warszawa · Python / Computer vision">Warsaw · Python / Computer vision</p>
+      <h1 id="name">Korneliusz <span>Musiał</span></h1>
+      <p class="lead" data-pl="Trenowałem YOLO do wykrywania fotopunktów na zdjęciach lotniczych. W Pythonie rozwijam narzędzia do rekonstrukcji scen 3D ze zdjęć.">I trained YOLO to detect ground control points in aerial images. I build Python tools for reconstructing 3D scenes from photographs.</p>
+      <div class="actions"><a class="primary" href="#projects" data-pl="Zobacz projekty ↓">Explore projects ↓</a><a class="secondary" href="mailto:kornel.musial@gmail.com?subject=CV%20request" data-pl="Poproś o CV">Request CV</a></div>
+    </section>
+    <section class="chapter" id="projects" aria-labelledby="projects-heading">
+      <h2 id="projects-heading" data-pl="Projekty">Projects</h2>
+      <article>
+<h3 data-pl="NeRF vs Gaussian Splatting">NeRF vs Gaussian Splatting</h3><p data-pl="Aplikacja Django do zarządzania zbiorami obrazów, pozycjami kamer, uruchomieniami Nerfstudio, logami i artefaktami rekonstrukcji.">Django application for managing image datasets, camera poses, Nerfstudio runs, logs and reconstruction artifacts.</p><div class="stack"><span class="tag">Python</span> · <span class="tag">Django</span> · <span class="tag">Nerfstudio</span> · <span class="tag">3D vision</span></div><p class="detail" data-pl="W testach aplikacji uruchomienie treningu jest symulowane. Benchmark jakości na wydzielonych widokach to kolejny etap. Podgląd PLY pokazuje chmurę punktów.">Application tests mock training. A held-out quality benchmark is the next milestone. The PLY preview displays point clouds.</p><a class="project-link" href="https://github.com/Korniszon99/nerf_vs_gaussian"><span data-pl="Kod i dokumentacja ↗">Source &amp; documentation ↗</span></a>
+</article>
+<article>
+<h3 data-pl="Planowanie nalotów fotogrametrycznych">Photogrammetric Flight Planner</h3><p data-pl="Edukacyjna aplikacja Django obliczająca parametry nalotu na podstawie GSD, geometrii kamery i pokrycia zdjęć.">Educational Django application calculating flight parameters from target GSD, camera geometry and image overlap.</p><div class="stack"><span class="tag">Django</span> · <span class="tag">Camera geometry</span> · <span class="tag">Matplotlib</span></div><p class="detail" data-pl="Model dydaktyczny dla płaskiego terenu. Ograniczenia obliczeń są opisane w README.">Educational flat-ground model. Calculation limitations are documented in the README.</p><a class="project-link" href="https://github.com/Korniszon99/fotogrametia_projekt_nalotu"><span data-pl="Kod i dokumentacja ↗">Source &amp; documentation ↗</span></a><details><summary data-pl="Zobacz widok aplikacji">View the planner</summary><img src="https://raw.githubusercontent.com/Korniszon99/fotogrametia_projekt_nalotu/main/img_1.png" loading="lazy" width="600" height="350" alt="Screenshot of the flight planner from its repository"></details>
+</article>
+<article>
+<h3 data-pl="EuroRace Backend">EuroRace Backend</h3><p data-pl="Backend Django REST Framework i GeoDjango/PostGIS do obsługi lokalizacji uczestników i zadań.">Django REST Framework and GeoDjango/PostGIS backend for participant locations and event tasks.</p><div class="stack"><span class="tag">Django REST</span> · <span class="tag">PostGIS</span> · <span class="tag">WebSockets</span></div><p class="detail" data-pl="W repo są Docker Compose i testy obsługi lokalizacji. Wdrożenie produkcyjne wymaga przygotowania konfiguracji.">Docker Compose and location handling tests are in the repository. Production deployment requires configuration hardening.</p><a class="project-link" href="https://github.com/Korniszon99/eurorace_backend"><span data-pl="Kod i dokumentacja ↗">Source &amp; documentation ↗</span></a>
+</article>
+    </section>
+    <section class="chapter" id="experience" aria-labelledby="experience-heading">
+      <h2 id="experience-heading" data-pl="Doświadczenie">Experience</h2>
+      <article class="experience"><div class="date" data-pl="09.2026 - obecnie">Sep 2026 - Present</div><div><div class="org" data-pl="Polpharma">Polpharma</div><h3 class="" data-pl="Stażysta AI">AI Intern</h3><p class="" data-pl="Automatyzuję uzupełnianie słowników produktowych dla działu finansowego z wykorzystaniem Power Automate i Copilot Studio. Zajmuję się analizą danych i Power BI.">Automate product dictionary completion for the finance department using Power Automate and Copilot Studio. Work on data analysis and Power BI.</p></div></article>
 <article class="experience"><div class="date" data-pl="02.2026 - 05.2026">Feb 2026 - May 2026</div><div><div class="org" data-pl="Politechnika Warszawska">Warsaw University of Technology</div><h3 class="" data-pl="Staż przy fotogrametrii i wizualizacji danych 3D">Photogrammetry and 3D Geospatial Visualization Intern</h3><p class="" data-pl="Rozwijałem aplikację planowania nalotów w MapLibre na podstawie istniejącej wtyczki QGIS. Uczestniczyłem w pracach nad integracją CesiumJS i Gaussian Splatting z wykorzystaniem glTF.">Developed a web application for photogrammetric flight planning in MapLibre based on an existing QGIS plugin. Contributed to work integrating CesiumJS and Gaussian Splatting using glTF.</p></div></article>
 <article class="experience"><div class="date" data-pl="06.2025 - 02.2026">Jun 2025 - Feb 2026</div><div><div class="org" data-pl="Skysnap">Skysnap</div><h3 class="" data-pl="AI Intern">AI Intern</h3><p class="" data-pl="Trenowałem modele YOLO do detekcji fotopunktów GCP na zbiorze danych przygotowanym dla tego zadania; korzystałem z SAHI przy inferencji na zdjęciach o wysokiej rozdzielczości. Analizowałem wizualizacje predykcji, macierze pomyłek, confidence i przebieg treningu. Wskazywałem słabą reprezentację niektórych typów GCP jako możliwe źródło błędów. Rozwijałem i utrzymywałem pipeline’y przetwarzania fotogrametrycznego w Apache Airflow.">Trained YOLO models for Ground Control Point detection using a task-specific dataset; used SAHI for inference on high-resolution imagery. Analyzed prediction visualizations, confusion matrices, confidence scores and training outputs. Investigated limited representation of certain GCP types as a possible source of detection errors. Developed and maintained photogrammetric processing pipelines in Apache Airflow.</p></div></article>
 <article class="experience"><div class="date" data-pl="03.2025 - 05.2025">Mar 2025 - May 2025</div><div><div class="org" data-pl="Centrum Informatyzacji PW">WUT IT Centre</div><h3 class="" data-pl="Software Engineering Intern">Software Engineering Intern</h3><p class="" data-pl="Rozwijałem backend systemu finansowego samorządu w Django. Pracowałem z testami Pytest i Behave, Dockerem oraz gałęziami funkcjonalnymi w GitLab.">Developed Django backend features for a financial management system supporting the Students’ Union. Worked with Pytest and Behave tests, Docker and GitLab feature branches.</p></div></article>
 <article class="experience"><div class="date" data-pl="07.2024 - 09.2024">Jul 2024 - Sep 2024</div><div><div class="org" data-pl="Intiaro">Intiaro</div><h3 class="" data-pl="Software Engineering Intern">Software Engineering Intern</h3><p class="" data-pl="Tworzyłem mikroserwis Python komunikujący się asynchronicznie z firmowym API. Pracowałem z FastAPI, Amazon DynamoDB i panelem administracyjnym do operacji CRUD.">Built a Python microservice for asynchronous communication with company APIs. Worked with FastAPI, Amazon DynamoDB and a CRUD administration interface.</p></div></article>
-<div class="skills">
+      <div class="skills">
 <div><h3>Python & backend</h3><p class="" data-pl="Django, FastAPI, REST API, GeoDjango, PostGIS, Airflow, Docker, Git.">Django, FastAPI, REST APIs, GeoDjango, PostGIS, Airflow, Docker, Git.</p></div>
 <div><h3>Computer vision</h3><p class="" data-pl="YOLO, SAHI, Nerfstudio, filtrowanie obrazów, histogramy i podstawy teledetekcji.">YOLO, SAHI, Nerfstudio, image filtering, histograms and remote sensing fundamentals.</p></div>
-<div><h3>Foundations / Podstawy</h3><p class="" data-pl="Podstawy C++; trening na GPU z CUDA. Dalej: odtwarzalne eksperymenty 3D vision i nauka Rust.">C++ foundations; GPU training with CUDA. Next: reproducible 3D vision experiments and learning Rust.</p></div>
+<div><h3 data-pl="Podstawy i dalsza nauka">Foundations and current study</h3><p class="" data-pl="Podstawy C++; trening na GPU z CUDA. Dalej: odtwarzalne eksperymenty 3D vision i nauka Rust.">C++ foundations; GPU training with CUDA. Next: reproducible 3D vision experiments and learning Rust.</p></div>
 </div><div class="education" data-pl="Politechnika Warszawska | Geoinformatyka, studia inżynierskie w toku
 10.2023 - obecnie | Planowana obrona: wrzesień 2027 · Angielski - swobodna komunikacja techniczna, w tym omawianie projektów.">Warsaw University of Technology | BEng in Geoinformatics in progress
-Oct 2023 - Present | Expected thesis defence: September 2027 · English - confident technical communication, including project discussions.</div></div></section>
-<section id="explore"><div class="wrap"><div class="section-head"><div><div class="eyebrow">03 / GEOSPATIAL TOUCH</div><h2 class="" data-pl="Trochę mojego stylu.">A little of my style.</h2></div><p class="" data-pl="Terminal i mapa zostały. Najważniejsze informacje są dostępne również powyżej.">The terminal and map are still here. All essential information is also available above.</p></div>
-<div class="explore"><div class="terminal"><div class="bar">kornel@portfolio:~</div><div class="terminal-body"><div id="terminal-output" role="log" aria-live="polite">$ whoami
-Korneliusz Musiał / Python &amp; computer vision
-$ help
-projects · experience · github · cv · clear</div><form class="cmd" id="terminal-form"><label for="command-input">$</label><input id="command-input" autocomplete="off" spellcheck="false" aria-label="Terminal command" placeholder="help"><button type="submit" aria-label="Run command">↵</button></form><div class="command-buttons"><button data-command="projects">projects</button><button data-command="experience">experience</button><button data-command="github">github</button><button data-command="cv">cv</button></div></div></div><div class="map-panel"><div class="bar">WARSAW / EXPERIENCE MAP</div><div id="map-placeholder"><p class="" data-pl="Miejsca z mojego doświadczenia w Warszawie. Mapa ładuje się po kliknięciu.">Places from my experience in Warsaw. The map loads when you open it.</p><button class="btn primary" id="load-map"><span class="" data-pl="Otwórz mapę">Open map</span></button><p id="map-status" role="status" hidden></p></div><div id="map" aria-label="Experience locations in Warsaw" hidden></div><div class="map-options"><button data-place="PW">PW</button><button data-place="Intiaro">Intiaro</button><button data-place="Skysnap">Skysnap</button></div></div></div></div></section>
-<div id="contact" class="wrap contact"><div><div class="eyebrow" data-pl="Porozmawiajmy o roli">Let’s talk about a role</div><h2>Python. AI. Computer vision.</h2><p class="" data-pl="Szukam rozwoju technicznego, code review i pracy blisko obrazu.">Looking for technical growth, code review and work close to visual data.</p></div><div class="contact-links"><a class="mail" href="mailto:kornel.musial@gmail.com">kornel.musial@gmail.com</a><br><a href="https://github.com/Korniszon99">GitHub ↗</a> &nbsp; <a href="https://www.linkedin.com/in/korneliusz-musial/">LinkedIn ↗</a></div></div></main><footer><div class="wrap"><span>© 2026 Korneliusz Musiał</span><span>Python / Computer vision / Geoinformatics</span></div></footer>
+Oct 2023 - Present | Expected thesis defence: September 2027 · English - confident technical communication, including project discussions.</div>
+    </section>
+    <section class="chapter" id="contact" aria-labelledby="contact-heading">
+      <h2 id="contact-heading" data-pl="Kontakt">Contact</h2>
+      <p class="lead" data-pl="Szukam roli stażowej lub juniorskiej, w której będę pisać kod, pracować z obrazami i uczyć się od zespołu.">I’m looking for an internship or junior role where I can write code, work with images and learn from the team.</p>
+      <div class="actions"><a class="mail" href="mailto:kornel.musial@gmail.com">kornel.musial@gmail.com</a></div>
+      <div class="actions"><a class="secondary" href="https://github.com/Korniszon99">GitHub ↗</a><a class="secondary" href="https://www.linkedin.com/in/korneliusz-musial/">LinkedIn ↗</a></div>
+    </section>
+  </main>
+</div>
+<footer class="foot">© 2026 Korneliusz Musiał</footer>
 <script>
-const translations=[...document.querySelectorAll('[data-pl]')];translations.forEach(e=>e.dataset.en=e.textContent);let language='en';
-function setLanguage(lang){language=lang;document.documentElement.lang=lang;translations.forEach(e=>e.textContent=e.dataset[lang]);document.querySelectorAll('[data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===lang)));try{localStorage.setItem('portfolio-language',lang)}catch(e){}}
-document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>setLanguage(b.dataset.lang)));try{if(localStorage.getItem('portfolio-language')==='pl')setLanguage('pl')}catch(e){}
-const cloud=document.getElementById('point-cloud');for(let i=0;i<190;i++){const a=i*2.39996323,r=12+Math.sqrt(i/190)*95,c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',(250+Math.cos(a)*r).toFixed(2));c.setAttribute('cy',(190+Math.sin(a)*r*.7+Math.sin(i*.35)*22).toFixed(2));c.setAttribute('r',String(i%5===0?3:1.4));c.setAttribute('fill',i%4===0?'#f2f3e9':'#ceff86');c.setAttribute('opacity',String(.3+(i%7)/10));cloud.append(c)}
-function requestCV(){location.href='mailto:kornel.musial@gmail.com?subject=CV%20'+language.toUpperCase()+'%20request'}
-const output=document.getElementById('terminal-output');function command(raw){let c=raw.trim().toLowerCase();if(c.startsWith('cd '))c=c.slice(3).trim();let reply='';if(c==='clear'){output.textContent='';return}if(c==='help'||c==='ls')reply='projects · experience · github · cv · contact · clear';else if(['projects','experience','contact'].includes(c)){document.getElementById(c).scrollIntoView();reply='#'+c}else if(c==='github'){location.href='https://github.com/Korniszon99';return}else if(c==='cv'){requestCV();reply='CV request by email'}else if(['pw','intiaro','skysnap'].includes(c)){document.getElementById('experience').scrollIntoView();reply='See experience above.'}else reply=language==='pl'?'Nieznana komenda. Wpisz help.':'Unknown command. Type help.';output.textContent=(output.textContent+'\n$ '+raw.slice(0,150)+'\n'+reply).slice(-2200);output.scrollTop=output.scrollHeight}
-document.getElementById('terminal-form').addEventListener('submit',e=>{e.preventDefault();const input=document.getElementById('command-input');if(input.value.trim())command(input.value);input.value=''});document.querySelectorAll('[data-command]').forEach(b=>b.addEventListener('click',()=>command(b.dataset.command)));
-const places={PW:[21.0105626,52.2204571],Intiaro:[20.9709719,52.2298661],Skysnap:[21.025001,52.1855266]};let map,loadingMap=false;async function loadMap(place){if(map){if(place)map.flyTo({center:places[place],zoom:14,essential:false});return}if(loadingMap)return;loadingMap=true;const status=document.getElementById('map-status');status.hidden=false;status.textContent=language==='pl'?'Ładowanie mapy…':'Loading map…';try{if(!window.maplibregl){await new Promise((resolve,reject)=>{const css=document.createElement('link');css.rel='stylesheet';css.href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css';document.head.append(css);const s=document.createElement('script');s.src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js';s.onload=resolve;s.onerror=reject;document.head.append(s)})}document.getElementById('map').hidden=false;map=new maplibregl.Map({container:'map',style:'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',center:place?places[place]:[21.005,52.212],zoom:place?14:10.5});map.addControl(new maplibregl.NavigationControl(),'top-right');map.on('load',()=>{document.getElementById('map-placeholder').hidden=true;map.resize()});map.on('error',()=>{if(!map.isStyleLoaded()){document.getElementById('map-placeholder').hidden=false;status.textContent=language==='pl'?'Mapa jest niedostępna. Doświadczenie opisano powyżej.':'Map unavailable. Experience details are above.'}});for(const [name,coords]of Object.entries(places)){new maplibregl.Marker({color:'#ceff86'}).setLngLat(coords).setPopup(new maplibregl.Popup().setText(name)).addTo(map)}}catch(e){document.getElementById('map').hidden=true;map=null;status.textContent=language==='pl'?'Nie udało się wczytać mapy. Pozostała część strony działa.':'The map could not load. The rest of the portfolio remains available.'}finally{loadingMap=false}}
-document.getElementById('load-map').addEventListener('click',()=>loadMap());document.querySelectorAll('[data-place]').forEach(b=>b.addEventListener('click',()=>loadMap(b.dataset.place)));
-</script><noscript><p class="wrap">Enable JavaScript for the language switch and map. You can request the CV by email; all project details are visible above.</p></noscript></body></html>
+const chapters = [...document.querySelectorAll('.chapter')];
+const nodes = [...document.querySelectorAll('.point')];
+const field = document.querySelector('.field');
+const canvas = document.querySelector('canvas');
+const context = canvas.getContext('2d');
+const readout = document.querySelector('.current-section');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const compact = matchMedia('(max-width: 760px)');
+const labels = [...document.querySelectorAll('[data-pl]')];
+labels.forEach(label => { label.dataset.en = label.textContent; });
+
+function setLanguage(language) {
+  document.documentElement.lang = language;
+  labels.forEach(label => { label.textContent = label.dataset[language]; });
+  document.querySelectorAll('[data-lang]').forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.lang === language));
+  });
+  try { localStorage.setItem('portfolio-language', language); } catch {}
+  requestDraw();
+}
+
+const clamp = (value, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, value));
+const mix = (a, b, t) => a + (b - a) * t;
+const ease = t => t * t * (3 - 2 * t);
+const tau = Math.PI * 2;
+
+// A seeded distribution keeps a point's identity stable on resize and reverse scroll.
+let seed = 51023;
+function random() {
+  seed = (Math.imul(1664525, seed) + 1013904223) >>> 0;
+  return seed / 4294967296;
+}
+const particles = [];
+function addParticle(x, y, group, weight) {
+  particles.push({
+    x: (random() - 0.5) * 1.77, y: (random() - 0.5) * 1.12,
+    z: (random() - 0.5) * 1.24, endX:x, endY:y, group, weight,
+    shade: .38 + random() * .58
+  });
+}
+// Upper and lower lids share the corners. Two broken rings and fine radial
+// fibres describe an iris with a clear pupil and a small catchlight.
+for (let i = 0; i < 27; i++) {
+  const u = i / 26;
+  addParticle((u - .5) * 1.60, -.31 * Math.sin(Math.PI * u) ** .9, 'upper', 1.6);
+  if (i > 0 && i < 26) addParticle((u - .5) * 1.60, .25 * Math.sin(Math.PI * u) ** .9, 'lower', 1.4);
+}
+for (let i = 0; i < 32; i++) {
+  const a = tau * i / 32;
+  addParticle(.247 * Math.cos(a), -.021 + .247 * Math.sin(a), 'iris', 1.6);
+}
+for (let i = 0; i < 18; i++) {
+  const a = tau * i / 18;
+  addParticle(.099 * Math.cos(a), -.021 + .099 * Math.sin(a), 'pupil', 1.3);
+}
+for (let i = 0; i < 19; i++) {
+  const a = tau * i / 19 + .04;
+  addParticle(.174 * Math.cos(a), -.021 + .174 * Math.sin(a), 'fibre', .85);
+}
+addParticle(-.035, -.067, 'light', 2.65);
+
+const stops = [
+  {x:-.52,y:.18,z:.10}, {x:-.22,y:-.28,z:-.22},
+  {x:.24,y:.22,z:.20}, {x:.60,y:-.12,z:-.13}
+];
+const eyeStops = [[-.80,0],[0,-.31],[0,.25],[.80,0]];
+let frame = 0;
+function requestDraw() {
+  if (!frame) frame = requestAnimationFrame(draw);
+}
+function chapterPosition() {
+  const scroll = Math.max(0, window.scrollY);
+  const limit = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+  const topOffset = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  const positions = chapters.map((section, i) => i === 0 ? 0 :
+    clamp(section.getBoundingClientRect().top + scroll - topOffset, 0, limit));
+  positions[positions.length - 1] = limit;
+  for (let i = 1; i < positions.length; i++) {
+    if (scroll < positions[i]) return i - 1 + clamp((scroll - positions[i-1]) / Math.max(1, positions[i] - positions[i-1]));
+  }
+  return positions.length - 1;
+}
+function draw() {
+  frame = 0;
+  const w = field.clientWidth, h = field.clientHeight;
+  if (!w || !h) return;
+  const ratio = Math.min(devicePixelRatio || 1, 2);
+  const width = Math.round(w * ratio), height = Math.round(h * ratio);
+  if (canvas.width !== width || canvas.height !== height) {
+    canvas.width = width; canvas.height = height;
+  }
+  const p = chapterPosition();
+  const contactTop = chapters[3].getBoundingClientRect().top;
+  const inset = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  const selected = contactTop <= inset + 2 || p === 3 ? 3 : Math.floor(Math.min(2, p + .001));
+  const phase = reducedMotion.matches ? selected : p;
+  const blend = ease(clamp(phase - 2));
+  const scale = Math.min(w * .48, h * (compact.matches ? .80 : .66));
+  const centerX = w/2, centerY = h/2;
+  const start = Math.floor(phase), next = Math.min(3, start+1);
+  const t = ease(phase-start);
+  const cameraX = mix(stops[start].x, stops[next].x, t);
+  const cameraY = mix(stops[start].y, stops[next].y, t);
+  const yaw = -.12 + phase * .27;
+  function project(point, endX, endY) {
+    const x = point.x - cameraX * .62;
+    const y = point.y - cameraY * .67;
+    const rotatedX = Math.cos(yaw) * x + Math.sin(yaw) * point.z;
+    const depth = Math.cos(yaw) * point.z - Math.sin(yaw) * x;
+    const perspective = 1 / (1.20 - .30 * depth);
+    return [centerX + scale * mix(rotatedX * perspective, endX, blend),
+      centerY + scale * mix(y * perspective, endY, blend)];
+  }
+  const anchors = stops.map((stop,i) => project(stop, ...eyeStops[i]));
+  nodes.forEach((link,i) => {
+    link.style.left = clamp(anchors[i][0], 30, w-30) + 'px';
+    link.style.top = clamp(anchors[i][1], 23, h-23) + 'px';
+    if (i === selected) link.setAttribute('aria-current','location');
+    else link.removeAttribute('aria-current');
+  });
+  readout.textContent = nodes[selected].textContent.trim();
+  if (!context) return;
+  context.setTransform(ratio,0,0,ratio,0,0);
+  context.clearRect(0,0,w,h);
+  function line(points, color, close = false) {
+    context.beginPath();
+    points.forEach(([x,y],i) => i ? context.lineTo(x,y) : context.moveTo(x,y));
+    if (close) context.closePath();
+    context.strokeStyle = color; context.lineWidth = 1; context.stroke();
+  }
+  // Quiet marks establish the image plane without a moving HUD overlay.
+  for (const [x,y,sx,sy] of [[12,14,1,1],[w-12,14,-1,1],[12,h-14,1,-1],[w-12,h-14,-1,-1]]) {
+    line([[x + 12*sx,y],[x,y],[x,y + 12*sy]],'#4b6356');
+  }
+  const points = particles.map(q => project(q, q.endX, q.endY));
+  if (blend < 1) {
+    line(anchors, 'rgba(153,222,182,' + .32*(1-blend) + ')');
+    const focusX = mix(anchors[start][0], anchors[next][0], t);
+    const focusY = mix(anchors[start][1], anchors[next][1], t);
+    context.beginPath();
+    context.arc(focusX, focusY, compact.matches ? 8 : 11, 0, tau);
+    context.strokeStyle = 'rgba(178,248,204,' + .64 * (1-blend) + ')';
+    context.stroke();
+    for (let i=0;i<16;i+=2) line([points[i],points[i+1]],'rgba(118,160,140,' + .13*(1-blend) + ')');
+  }
+  if (blend > 0) {
+    for (const group of ['upper','lower','iris','pupil']) {
+      line(points.filter((_,i) => particles[i].group === group),
+        'rgba(147,230,181,' + (.48*blend*blend) + ')',group==='iris'||group==='pupil');
+    }
+    const fibres = particles.filter(q=>q.group==='fibre');
+    fibres.forEach(q => {
+      const [x,y] = project(q,q.endX,q.endY);
+      const tip = [centerX + scale*q.endX*1.32,centerY+scale*((q.endY+.021)*1.32-.021)];
+      line([[x,y],tip],'rgba(140,219,173,' + .32*blend**4 + ')');
+    });
+  }
+  points.forEach(([x,y],i) => {
+    const q = particles[i];
+    context.beginPath();
+    context.arc(x,y,(compact.matches ? .81 : 1)*q.weight,0,tau);
+    context.fillStyle = 'rgba(185,252,207,' + mix((i % 3 === 0 ? .86 : .17) * q.shade, q.shade, blend) + ')';
+    context.fill();
+  });
+}
+
+document.querySelectorAll('[data-lang]').forEach(button => {
+  button.addEventListener('click', () => setLanguage(button.dataset.lang));
+});
+let language = 'en';
+try { if (localStorage.getItem('portfolio-language') === 'pl') language = 'pl'; } catch {}
+setLanguage(language);
+window.addEventListener('scroll', requestDraw, {passive:true});
+window.addEventListener('resize', requestDraw);
+window.addEventListener('pageshow', requestDraw);
+reducedMotion.addEventListener('change', requestDraw);
+new ResizeObserver(requestDraw).observe(document.querySelector('.layout'));
+
+</script>
+</body>
+</html>
