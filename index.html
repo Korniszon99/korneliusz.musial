@@ -257,7 +257,9 @@ Oct 2023 - Present | Expected thesis defence: September 2027 · English - confid
       if (needed > station.offsetHeight) station.style.minHeight = needed + 'px';
       summary.focus({preventScroll:true});
       window.scrollTo({top:station.offsetTop + localY, behavior:'instant'});
-      update();
+      // Paint the new transform in this layout pass, before the browser can show the old one.
+      if (frame) cancelAnimationFrame(frame);
+      render();
     });
   }
 
