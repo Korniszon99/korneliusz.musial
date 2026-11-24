@@ -187,53 +187,59 @@ Oct 2023 - Present | Expected thesis defence: September 2027 · English - confid
   grain(-.047,-.09,'light');
 
 
-  // Give each small cluster one depth so its short edges stay attached during a flight.
-  const clusters = [];
-  for (let column = -2; column <= 15; column++) {
-    for (let row = -2; row <= 3; row++) {
-      const points = [];
-      const edges = [];
-      const count = 5 + Math.floor(random() * 6);
-      const spread = .045 + random() * .084;
-      for (let n = 0; n < count; n++) {
-        const x = (random() - .5) * 2, y = (random() - .5) * 2;
-        const neighbours = points.map((p, idx) => ({idx, d: (p.x-x)**2 + (p.y-y)**2}));
-        neighbours.sort((a,b) => a.d - b.d);
-        for (const near of neighbours.slice(0,n % 3 === 0 ? 2 : 1)) {
-          if (near.d < 1.8) edges.push([near.idx,n]);
-        }
-        points.push({x,y,r:.8+random()*.85});
-      }
-      clusters.push({x:(column+random()*.78)*.46, y:(row+random()*.8)*.45,
-        depth:.78+random()*.4, points, edges, spread});
-    }
+  // Sample an oblique strip of synthetic terrain in (x, elevation, depth).
+  // The two winding ridges, gaps and irregular scan passes stay fixed in world space.
+  function elevation(x, z) {
+    const crest = -.47 + .23*Math.sin(3.4*x) + .09*Math.sin(8.1*x + .6);
+    const ridge = Math.exp(-Math.abs(z-crest) * (3.2 + .65*Math.sin(4*x)));
+    const shoulder = Math.exp(-((z-.32-.20*Math.sin(4.6*x+.8))**2) * 12);
+    const folds = Math.sin(x*18 + z*6) + .45*Math.sin(x*41-z*13);
+    return .04 + (.30+.13*Math.cos(5*x+.7))*ridge
+      + (.14+.07*Math.sin(4.1*x))*shoulder + .028*folds*(.35+ridge);
   }
-  function drawClusters(w,h,camX,camY,blend) {
-    if (blend === 1) return;
-    const unit = Math.min(w, h*1.4);
-    ctx.strokeStyle='rgba(35,33,28,' + .26*(1-blend) + ')';
-    ctx.fillStyle='rgba(35,33,28,' + .60*(1-blend) + ')';
-    ctx.lineWidth=.8;
-    for (const cluster of clusters) {
-      const x=(.5+(cluster.x-camX)*cluster.depth)*w;
-      const y=(.37+(cluster.y-camY)*cluster.depth)*h;
-      const radius=cluster.spread*unit;
-      if (x < -radius || x > w+radius || y < -radius || y > h+radius) continue;
-      ctx.beginPath();
-      for (const [a,b] of cluster.edges) {
-        const p=cluster.points[a], q=cluster.points[b];
-        ctx.moveTo(x+p.x*radius,y+p.y*radius);
-        ctx.lineTo(x+q.x*radius,y+q.y*radius);
+  const scanTiles = [];
+  const scanInk = [.17,.25,.34,.46].map(alpha => 'rgba(37,35,30,'+alpha+')');
+  const tileWidth = .5;
+  for (let tile = -3; tile < 16; tile++) {
+    const left = tile*tileWidth;
+    const bands = scanInk.map(() => []);
+    for (let pass = 0; pass < 81; pass++) {
+      const zLine = -1.1 + pass*.028;
+      for (let sample = 0; sample < 69; sample++) {
+        const x = left+(sample+random())*tileWidth/69;
+        const z = zLine + (random()-.5)*.019 + .012*Math.sin(7*x+zLine);
+        const height = elevation(x,z);
+        const keep = .64 + .17*Math.sin(14*x + 5*z) + .12*Math.sin(29*z - 6*x);
+        if (random() > keep) continue;
+        const slope = (elevation(x,z+.012)-height)/.012;
+        const depth = 1/(1.07-z*.18);
+        const band = Math.floor(clamp(.45 + slope*.31 + (random()-.5)*.46,0,.999)*4);
+        bands[band].push({
+          x:x+.16*z, depth,
+          y:(.25*z - .65*height + (random()-.5)*.005)*depth,
+          size:(.67+random()*.77)*depth
+        });
       }
-      ctx.stroke();
-      ctx.beginPath();
-      for (const p of cluster.points) {
-        const px=x+p.x*radius, py=y+p.y*radius;
-        ctx.moveTo(px+p.r,py);
-        ctx.arc(px,py,p.r,0,tau);
-      }
-      ctx.fill();
     }
+    scanTiles.push({left,bands});
+  }
+  function drawScan(w,h,camX,camY,blend) {
+    if (blend >= 1) return;
+    const scale = Math.max(w,.88*h);
+    const reach = w/(2*scale)*1.35 + .24;
+    ctx.globalAlpha = 1-blend;
+    for (const tile of scanTiles) {
+      if (tile.left > camX+reach || tile.left+tileWidth < camX-reach) continue;
+      tile.bands.forEach((band, index) => {
+        ctx.fillStyle = scanInk[index];
+        for (const p of band) {
+          const x = w*.5 + (p.x-camX)*scale*p.depth;
+          const y = h*(.84 + p.y - .13*camY*p.depth);
+          if (x >= -2 && x <= w && y >= -2 && y <= h) ctx.fillRect(x,y,p.size,p.size);
+        }
+      });
+    }
+    ctx.globalAlpha = 1;
   }
 
   // Changing a row's height must not convert reading progress into camera travel.
@@ -328,7 +334,7 @@ Oct 2023 - Present | Expected thesis defence: September 2027 · English - confid
     });
     const contact=coords[3];
     const size=Math.min(w*.39,document.querySelector('.eye-slot').offsetHeight*1.08,290);
-    drawClusters(w,h,quiet?0:camX,quiet?0:camY,blend);
+    drawScan(w,h,quiet?0:camX,quiet?0:camY,blend);
     // A continuous curve passes through the actual DOM pins, including after a language change.
     if (!quiet && blend<1) {
       ctx.beginPath();
@@ -360,7 +366,7 @@ Oct 2023 - Present | Expected thesis defence: September 2027 · English - confid
       if(x< -3||y< -3||x>w+3||y>h+3)return;
       const p=dust[k], radius=p.group==='light'?2.2:(.52+p.light*.92);
       ctx.beginPath();ctx.arc(x,y,radius,0,tau);
-      ctx.fillStyle='rgba(34,33,30,'+(p.light*lerp(.84,1,blend))+')';ctx.fill();
+      ctx.fillStyle='rgba(34,33,30,'+(p.light*lerp(.18,1,blend))+')';ctx.fill();
     });
   }
   window.addEventListener('scroll',update,{passive:true});
